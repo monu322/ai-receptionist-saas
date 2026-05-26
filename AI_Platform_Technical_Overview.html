@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Business Automation Platform — Technical Overview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --sb-w: 252px;
+  --sb-bg: #080E1C;
+  --sb-border: rgba(255,255,255,.06);
+  --sb-text: #7A8BA0;
+  --sb-hover: rgba(255,255,255,.05);
+  --sb-active-bg: rgba(99,102,241,.16);
+  --sb-active-txt: #C7D2FE;
+  --sb-active-border: #6366F1;
+  --bg: #F3F4F8;
+  --card: #FFFFFF;
+  --border: #E4E7EF;
+  --txt: #0D1117;
+  --txt2: #4A5568;
+  --txt3: #8896AA;
+  --r-sm: 6px;
+  --r-md: 10px;
+  --r-lg: 16px;
+  --sh: 0 1px 3px rgba(15,23,42,.07), 0 1px 2px rgba(15,23,42,.05);
+  --sh-md: 0 4px 12px rgba(15,23,42,.09), 0 2px 4px rgba(15,23,42,.06);
+  --font: 'DM Sans', system-ui, sans-serif;
+  --font-hd: 'Syne', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--txt);
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* ── SIDEBAR ──────────────────────────── */
+#sidebar {
+  width: var(--sb-w);
+  min-width: var(--sb-w);
+  background: var(--sb-bg);
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  border-right: 1px solid var(--sb-border);
+}
+
+#brand {
+  padding: 22px 18px 18px;
+  border-bottom: 1px solid var(--sb-border);
+}
+
+.brand-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 10px;
+}
+
+.brand-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: #6366F1;
+  box-shadow: 0 0 8px #6366F1;
+}
+
+.brand-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: #6366F1;
+}
+
+.brand-name {
+  font-family: var(--font-hd);
+  font-size: 16px;
+  font-weight: 700;
+  color: #F0F4FF;
+  line-height: 1.25;
+}
+
+.brand-sub {
+  font-size: 11.5px;
+  color: var(--sb-text);
+  margin-top: 3px;
+}
+
+nav { flex: 1; padding: 10px 10px 20px; }
+
+.nav-section {
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: rgba(122,139,160,.45);
+  padding: 14px 8px 5px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  width: 100%;
+  padding: 9px 10px;
+  border-radius: var(--r-sm);
+  border: none;
+  border-left: 2px solid transparent;
+  background: transparent;
+  color: var(--sb-text);
+  font-size: 13px;
+  font-family: var(--font);
+  cursor: pointer;
+  text-align: left;
+  transition: all .15s;
+  line-height: 1;
+}
+
+.nav-item:hover { background: var(--sb-hover); color: #A0B0C4; }
+
+.nav-item.active {
+  background: var(--sb-active-bg);
+  color: var(--sb-active-txt);
+  border-left-color: var(--sb-active-border);
+}
+
+.nav-item.wf1.active { border-left-color:#8B5CF6; background:rgba(139,92,246,.15); color:#DDD6FE; }
+.nav-item.wf2.active { border-left-color:#10B981; background:rgba(16,185,129,.12); color:#A7F3D0; }
+.nav-item.wf3.active { border-left-color:#F59E0B; background:rgba(245,158,11,.12); color:#FDE68A; }
+
+.nav-icon { width:15px; height:15px; flex-shrink:0; opacity:.7; }
+.nav-item.active .nav-icon { opacity:1; }
+
+.nav-num {
+  margin-left: auto;
+  font-size: 9px;
+  font-weight: 600;
+  padding: 2px 5px;
+  border-radius: 4px;
+  background: rgba(255,255,255,.06);
+  color: var(--sb-text);
+}
+
+/* ── MAIN ─────────────────────────────── */
+#main {
+  flex: 1;
+  height: 100vh;
+  overflow-y: auto;
+  padding: 34px 36px;
+  min-width: 0;
+}
+
+.section { display: none; animation: fadeIn .2s ease; }
+.section.active { display: block; }
+
+@keyframes fadeIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:none; } }
+
+/* Section headers */
+.sec-eyebrow {
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.sec-title {
+  font-family: var(--font-hd);
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--txt);
+  line-height: 1.15;
+}
+
+.sec-desc {
+  font-size: 14px;
+  color: var(--txt2);
+  line-height: 1.65;
+  margin-top: 8px;
+  max-width: 620px;
+}
+
+.sec-header { margin-bottom: 26px; }
+
+/* Cards */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  box-shadow: var(--sh);
+}
+
+/* ── OVERVIEW ─────────────────────────── */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  padding: 16px 18px;
+  box-shadow: var(--sh);
+}
+
+.stat-val {
+  font-family: var(--font-hd);
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.stat-label { font-size: 12px; color: var(--txt3); margin-top: 4px; }
+
+.wf-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.wf-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 22px;
+  box-shadow: var(--sh);
+  cursor: pointer;
+  transition: all .2s;
+  border-top: 3px solid transparent;
+  display: flex;
+  flex-direction: column;
+}
+
+.wf-card:hover { box-shadow: var(--sh-md); transform: translateY(-2px); }
+.wf-card.voice { border-top-color: #8B5CF6; }
+.wf-card.chat  { border-top-color: #10B981; }
+.wf-card.out   { border-top-color: #F59E0B; }
+
+.wf-icon {
+  width: 40px; height: 40px;
+  border-radius: var(--r-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 14px;
+  font-size: 18px;
+}
+
+.wf-icon.voice { background:#F5F3FF; }
+.wf-icon.chat  { background:#ECFDF5; }
+.wf-icon.out   { background:#FFFBEB; }
+
+.wf-title {
+  font-family: var(--font-hd);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--txt);
+  margin-bottom: 7px;
+}
+
+.wf-desc { font-size: 13px; color: var(--txt2); line-height: 1.6; flex: 1; }
+
+.wf-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 14px;
+  font-size: 12px;
+  font-weight: 500;
+  border: none;
+  background: none;
+  padding: 0;
+  font-family: var(--font);
+  cursor: pointer;
+  transition: gap .15s;
+}
+
+.wf-btn.voice { color:#7C3AED; }
+.wf-btn.chat  { color:#059669; }
+.wf-btn.out   { color:#B45309; }
+.wf-btn:hover { gap: 9px; }
+
+.stack-card { padding: 20px 24px; }
+.stack-title { font-size: 13px; font-weight: 600; color: var(--txt); margin-bottom: 14px; }
+.stack-tags  { display: flex; flex-wrap: wrap; gap: 7px; }
+
+.tag {
+  font-size: 11.5px;
+  padding: 4px 11px;
+  border-radius: 6px;
+  font-weight: 500;
+}
+
+.tag-blue   { background:#EFF6FF; color:#1D4ED8; border:1px solid #BFDBFE; }
+.tag-violet { background:#F5F3FF; color:#6D28D9; border:1px solid #DDD6FE; }
+.tag-green  { background:#ECFDF5; color:#065F46; border:1px solid #A7F3D0; }
+.tag-amber  { background:#FFFBEB; color:#92400E; border:1px solid #FDE68A; }
+.tag-red    { background:#FFF1F2; color:#9F1239; border:1px solid #FECDD3; }
+.tag-slate  { background:#F8FAFC; color:#475569; border:1px solid #E2E8F0; }
+
+/* ── ARCHITECTURE ─────────────────────── */
+.arch-card { padding: 24px; overflow-x: auto; }
+.arch-legend { display:flex; flex-wrap:wrap; gap:10px; margin-top:18px; }
+.legend-item { display:flex; align-items:center; gap:6px; font-size:11.5px; color:var(--txt2); }
+.legend-dot { width:10px; height:10px; border-radius:3px; }
+
+/* ── STEPPER ──────────────────────────── */
+.stepper-card { padding: 26px; }
+
+.flow-pills-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  margin-bottom: 26px;
+  flex-wrap: wrap;
+}
+
+.flow-group-lbl {
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--txt3);
+  margin-bottom: 7px;
+  letter-spacing: .02em;
+}
+
+.pills-row { display:flex; gap:5px; }
+
+.flow-div {
+  width: 1px;
+  height: 46px;
+  background: var(--border);
+}
+
+.sp {
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all .15s;
+  border: 1.5px solid var(--border);
+  color: var(--txt3);
+  background: var(--bg);
+  user-select: none;
+  font-family: var(--font);
+}
+.sp:hover { border-color: var(--txt3); color:var(--txt2); }
+.sp.done { opacity: .38; }
+
+.stage-badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 11px;
+  border-radius: 20px;
+  margin-bottom: 10px;
+}
+
+.stage-title {
+  font-family: var(--font-hd);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--txt);
+  margin: 4px 0 14px;
+  line-height: 1.25;
+}
+
+.sig-row { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:18px; }
+
+.sig-tag {
+  display: inline-block;
+  font-size: 11px;
+  padding: 3px 9px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  color: var(--txt2);
+  background: var(--bg);
+}
+
+.stage-cards { display:flex; flex-wrap:wrap; gap:14px; margin-bottom:22px; }
+
+.sc {
+  flex: 1 1 260px;
+  min-width: 0;
+  border: 1px solid var(--border);
+  padding: 18px;
+}
+
+.sc-hd {
+  font-size: 11.5px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+
+.sc-body { font-size: 13.5px; line-height: 1.7; color: var(--txt2); }
+
+.sc-body ul { margin:0; padding-left:18px; }
+.sc-body li { margin-bottom:9px; }
+.sc-body li:last-child { margin-bottom:0; }
+
+.stage-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 4px;
+}
+
+.snav-btn {
+  padding: 9px 20px;
+  border-radius: var(--r-sm);
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--txt);
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  font-family: var(--font);
+  transition: all .15s;
+}
+
+.snav-btn:hover:not(:disabled) { background:var(--card); box-shadow:var(--sh); }
+.snav-btn:disabled { opacity:.3; cursor:not-allowed; }
+.stage-ctr { font-size: 12px; color: var(--txt3); }
+
+/* Code */
+code {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  background: #F1F5F9;
+  padding: 1px 6px;
+  border-radius: 4px;
+  color: #5B21B6;
+  border: 1px solid #DDD6FE;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width:6px; }
+::-webkit-scrollbar-track { background:transparent; }
+::-webkit-scrollbar-thumb { background:#CBD5E1; border-radius:3px; }
+#sidebar::-webkit-scrollbar-thumb { background:rgba(255,255,255,.1); }
+
+/* Divider */
+.divider { height:1px; background:var(--border); margin:24px 0; }
+
+/* Responsive */
+@media (max-width:680px) {
+  body { flex-direction:column; overflow:auto; height:auto; }
+  #sidebar { width:100%; height:auto; min-width:0; }
+  #main { height:auto; padding:20px 16px; overflow:visible; }
+  nav { display:flex; flex-wrap:wrap; gap:4px; }
+  .nav-section { display:none; }
+  .nav-item { padding:6px 10px; font-size:12px; border-left:none; border-bottom:2px solid transparent; }
+  .nav-item.active,.nav-item.wf1.active,.nav-item.wf2.active,.nav-item.wf3.active { border-left:none; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ SIDEBAR ═══════════════════════════════════════════════════════════ -->
+<aside id="sidebar">
+  <div id="brand">
+    <div class="brand-badge">
+      <span class="brand-dot"></span>
+      <span class="brand-label">Technical doc</span>
+    </div>
+    <div class="brand-name">AI Business Automation<br>Platform</div>
+    <div class="brand-sub">Prepared by Neurosphere</div>
+  </div>
+  <nav>
+    <div class="nav-section">General</div>
+    <button class="nav-item active" data-sec="overview" onclick="show('overview')">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      Platform overview
+    </button>
+    <button class="nav-item" data-sec="arch" onclick="show('arch')">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      Technical architecture
+    </button>
+
+    <div class="nav-section">Workflows</div>
+    <button class="nav-item wf1" data-sec="wf1" onclick="show('wf1')">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 8.67 19.79 19.79 0 01.22 4.09 2 2 0 012.22 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+      01 — AI voice call
+      <span class="nav-num">9</span>
+    </button>
+    <button class="nav-item wf2" data-sec="wf2" onclick="show('wf2')">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+      02 — Omnichannel chat
+      <span class="nav-num">9</span>
+    </button>
+    <button class="nav-item wf3" data-sec="wf3" onclick="show('wf3')">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+      03 — Outbound sales
+      <span class="nav-num">9</span>
+    </button>
+  </nav>
+</aside>
+
+<!-- ═══ MAIN ══════════════════════════════════════════════════════════════ -->
+<main id="main">
+
+<!-- ── OVERVIEW ──────────────────────────────────────────────────────────── -->
+<section id="sec-overview" class="section active">
+  <div class="sec-header">
+    <div class="sec-eyebrow" style="color:#6366F1">Platform overview</div>
+    <div class="sec-title">AI Business Automation Platform</div>
+    <div class="sec-desc">A complete AI-driven communication and sales ecosystem. Replaces or assists human receptionists, support agents, and outbound sales teams using conversational AI, realistic voice AI, and multi-channel workflow automation — all from a single unified platform.</div>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-card"><div class="stat-val" style="color:#8B5CF6">24/7</div><div class="stat-label">AI availability</div></div>
+    <div class="stat-card"><div class="stat-val" style="color:#10B981">6+</div><div class="stat-label">Channels supported</div></div>
+    <div class="stat-card"><div class="stat-val" style="color:#F59E0B">&lt;600ms</div><div class="stat-label">Voice latency target</div></div>
+    <div class="stat-card"><div class="stat-val" style="color:#6366F1">100%</div><div class="stat-label">Calls logged to CRM</div></div>
+    <div class="stat-card"><div class="stat-val" style="color:#EF4444">45s</div><div class="stat-label">Missed call recovery</div></div>
+    <div class="stat-card"><div class="stat-val" style="color:#0EA5E9">Multi</div><div class="stat-label">Tenant SaaS</div></div>
+  </div>
+
+  <div class="wf-grid">
+    <div class="wf-card voice" onclick="show('wf1')">
+      <div class="wf-icon voice">📞</div>
+      <div class="wf-title">Workflow 01 — AI voice call</div>
+      <div class="wf-desc">Customer calls the business. The AI receptionist answers in the owner's cloned voice, collects details, answers questions via RAG, books appointments via Cal.com, and logs everything to the CRM — zero human involvement required.</div>
+      <button class="wf-btn voice">View workflow →</button>
+    </div>
+    <div class="wf-card chat" onclick="show('wf2')">
+      <div class="wf-icon chat">💬</div>
+      <div class="wf-title">Workflow 02 — Omnichannel chat</div>
+      <div class="wf-desc">WhatsApp, Instagram DM, SMS, and website chat all feed into one unified inbox. The AI handles conversations, answers questions, and books appointments across every channel. Flow B covers proactive broadcast campaigns.</div>
+      <button class="wf-btn chat">View workflow →</button>
+    </div>
+    <div class="wf-card out" onclick="show('wf3')">
+      <div class="wf-icon out">📤</div>
+      <div class="wf-title">Workflow 03 — Outbound sales</div>
+      <div class="wf-desc">AI dials leads from a configured campaign, qualifies them, handles objections, and books meetings. Non-converters are automatically enrolled in a multi-touch follow-up sequence across SMS, email, and another call attempt.</div>
+      <button class="wf-btn out">View workflow →</button>
+    </div>
+  </div>
+
+  <div class="card stack-card">
+    <div class="stack-title">Core technology stack</div>
+    <div class="stack-tags">
+      <span class="tag tag-blue">Next.js + TypeScript</span>
+      <span class="tag tag-blue">React Native</span>
+      <span class="tag tag-blue">Firebase FCM</span>
+      <span class="tag tag-violet">NestJS</span>
+      <span class="tag tag-violet">OpenAI GPT-4o</span>
+      <span class="tag tag-violet">LangChain</span>
+      <span class="tag tag-violet">Python FastAPI</span>
+      <span class="tag tag-green">ElevenLabs</span>
+      <span class="tag tag-green">Vapi / Retell AI</span>
+      <span class="tag tag-green">Twilio / Telnyx</span>
+      <span class="tag tag-green">WhatsApp Cloud API</span>
+      <span class="tag tag-amber">PostgreSQL</span>
+      <span class="tag tag-amber">Redis + BullMQ</span>
+      <span class="tag tag-amber">Pinecone / pgvector</span>
+      <span class="tag tag-amber">Deepgram ASR</span>
+      <span class="tag tag-red">AWS + Docker + K8s</span>
+      <span class="tag tag-red">Cal.com</span>
+      <span class="tag tag-red">Stripe</span>
+      <span class="tag tag-red">HubSpot / GoHighLevel</span>
+      <span class="tag tag-slate">SOC2-ready · GDPR · HIPAA</span>
+    </div>
+  </div>
+</section>
+
+<!-- ── ARCHITECTURE ───────────────────────────────────────────────────────── -->
+<section id="sec-arch" class="section">
+  <div class="sec-header">
+    <div class="sec-eyebrow" style="color:#6366F1">System design</div>
+    <div class="sec-title">Technical architecture</div>
+    <div class="sec-desc">Six-layer architecture built as a multi-tenant SaaS from day one. Each business is an isolated tenant with its own knowledge base, voice config, CRM connection, and billing record. The API-first design enables white-label reselling.</div>
+  </div>
+
+  <div class="card arch-card">
+    <svg width="100%" viewBox="0 0 660 420" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="arw" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M2 1.5L8 5L2 8.5" fill="none" stroke="#94A3B8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+
+      <!-- ── Layer 0: Client ── -->
+      <rect x="30" y="8" width="190" height="54" rx="8" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1"/>
+      <text x="125" y="29" text-anchor="middle" font-family="Syne,sans-serif" font-size="13" font-weight="600" fill="#1E40AF">Web dashboard</text>
+      <text x="125" y="47" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11" fill="#2563EB">Next.js + TypeScript</text>
+
+      <rect x="235" y="8" width="190" height="54" rx="8" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1"/>
+      <text x="330" y="29" text-anchor="middle" font-family="Syne,sans-serif" font-size="13" font-weight="600" fill="#1E40AF">Mobile app</text>
+      <text x="330" y="47" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11" fill="#2563EB">React Native + FCM</text>
+
+      <rect x="440" y="8" width="190" height="54" rx="8" fill="#EFF6FF" stroke="#93C5FD" stroke-width="1"/>
+      <text x="535" y="29" text-anchor="middle" font-family="Syne,sans-serif" font-size="13" font-weight="600" fill="#1E40AF">Inbound channels</text>
+      <text x="535" y="47" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11" fill="#2563EB">Phone · WA · SMS · Chat</text>
+
+      <!-- Arrow 0→1 -->
+      <line x1="330" y1="62" x2="330" y2="80" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arw)"/>
+
+      <!-- ── Layer 1: API Gateway ── -->
+      <rect x="30" y="82" width="600" height="46" rx="8" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1"/>
+      <text x="330" y="99" text-anchor="middle" font-family="Syne,sans-serif" font-size="13" font-weight="600" fill="#334155">API gateway + auth</text>
+      <text x="330" y="117" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11" fill="#64748B">NestJS — JWT · rate limiting · WebSocket · webhook routing</text>
+
+      <!-- Arrow 1→2 -->
+      <line x1="330" y1="128" x2="330" y2="146" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arw)"/>
+
+      <!-- ── Layer 2: Core Services ── -->
+      <rect x="30" y="148" width="141" height="54" rx="8" fill="#F5F3FF" stroke="#C4B5FD" stroke-width="1"/>
+      <text x="100" y="169" text-anchor="middle" font-family="Syne,sans-serif" font-size="13" font-weight="600" fill="#4C1D95">Voice service</text>
+      <text x="100" y="187" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11" fill="#7C3AED">Retell AI / Vapi</text>
+
+      <rect x="183" y="148" width="141" height="54" rx="8" fill="#F5F3FF" stroke="#C4B5FD" stroke-width="1"/>
+      <text x="253" y="169" text-anchor="middle" font-family="Syne,sans-serif" font-size="13" font-weight="600" fill="#4C1D95">Messaging</text>
+      <text x="253" y="187" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11" fill="#7C3AED">Twilio / Telnyx</text>
+
+      <rect x="336" y="148" width="141" height="54" rx="8" fill="#F5F3FF" stroke="#C4B5FD" stroke-width="1"/>
+      <text x="406" y="169" text-anchor="middle" font-family="Syne,sans-serif" font-size="13" font-weight="600" fill="#4C1D95">CRM &amp; calendar</text>
+      <text x="406" y="187" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11" fill="#7C3AED">HubSpot · GHL · Zoho</text>
+
+      <rect x="489" y="148" width="141" height="54" rx="8" fill="#F5F3FF" stroke="#C4B5FD" stroke-width="1"/>
+      <text x="559" y="169" text-anchor="middle" font-family="Syne,sans-serif" font-size="13" font-weight="600" fill="#4C1D95">Lead recovery</text>
+      <text x="559" y="187" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11" fill="#7C3AED">Missed call + SMS</text>
+
+      <!-- Arrow 2→3 -->
+      <line x1="330" y1="202" x2="330" y2="220" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arw)"/>
+
+      <!-- ── Layer 3: AI Intelligence ── -->
+      <rect x="30" y="222" width="190" height="54" rx="8" fill="#ECFDF5" stroke="#6EE7B7" stroke-width="1"/>
+      <text x="125" y="243" text-anchor="middle" font-family="Syne,sans-serif" font-size="13" font-weight="600" fill="#064E3B">LLM + automation</text>
+      <text x="125" y="261" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11" fill="#059669">OpenAI · LangChain</text>
+
+      <rect x="235" y="222" width="190" height="54" rx="8" fill="#ECFDF5" stroke="#6EE7B7" stroke-width="1"/>
+      <text x="330" y="243" text-anchor="middle" font-family="Syne,sans-serif" font-size="13" font-weight="600" fill="#064E3B">Voice AI</text>
+      <text x="330" y="261" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11" fill="#059669">ElevenLabs · Vapi</text>
+
+      <rect x="440" y="222" width="190" height="54" rx="8" fill="#ECFDF5" stroke="#6EE7B7" stroke-width="1"/>
+      <text x="535" y="243" text-anchor="middle" font-family="Syne,sans-serif" font-size="13" font-weight="600" fill="#064E3B">Knowledge base</text>
+      <text x="535" y="261" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11" fill="#059669">RAG + vector search</text>
+
+      <!-- Arrow 3→4 -->
+      <line x1="330" y1="276" x2="330" y2="294" stroke="#94A3B8" stroke-width="1.5" marker-end="url(#arw)"/>
+
+      <!-- ── Layer 4: Data ── -->
+      <rect x="30" y="296" width="190" height="54" rx="8" fill="#FFFBEB" stroke="#FCD34D" stroke-width="1"/>
+      <text x="125" y="317" text-anchor="middle" font-family="Syne,sans-serif" font-size="13" font-weight="600" fill="#78350F">PostgreSQL</text>
+      <text x="125" y="335" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11" fill="#D97706">Primary data store</text>
+
+      <rect x="235" y="296" width="190" height="54" rx="8" fill="#FFFBEB" stroke="#FCD34D" stroke-width="1"/>
+      <text x="330" y="317" text-anchor="middle" font-family="Syne,sans-serif" font-size="13" font-weight="600" fill="#78350F">Redis + BullMQ</text>
+      <text x="330" y="335" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11" fill="#D97706">Cache · queue · pub/sub</text>
+
+      <rect x="440" y="296" width="190" height="54" rx="8" fill="#FFFBEB" stroke="#FCD34D" stroke-width="1"/>
+      <text x="535" y="317" text-anchor="middle" font-family="Syne,sans-serif" font-size="13" font-weight="600" fill="#78350F">Vector store</text>
+      <text x="535" y="335" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11" fill="#D97706">Pinecone / pgvector</text>
+
+      <!-- ── Infra note ── -->
+      <rect x="30" y="368" width="600" height="40" rx="8" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1" stroke-dasharray="4,3"/>
+      <text x="330" y="384" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11" font-weight="500" fill="#64748B">Infrastructure</text>
+      <text x="330" y="399" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11" fill="#94A3B8">AWS · Docker · Kubernetes · auto-scaling · Stripe · Firebase · HubSpot · Cal.com</text>
+    </svg>
+
+    <div class="arch-legend">
+      <div class="legend-item"><div class="legend-dot" style="background:#BFDBFE"></div>Client layer</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#CBD5E1"></div>API gateway</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#C4B5FD"></div>Core services</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#6EE7B7"></div>AI intelligence</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#FCD34D"></div>Data layer</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#CBD5E1; border: 1px dashed #94A3B8;"></div>Infrastructure &amp; integrations</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── WORKFLOW 1 ─────────────────────────────────────────────────────────── -->
+<section id="sec-wf1" class="section">
+  <div class="sec-header">
+    <div class="sec-eyebrow" style="color:#8B5CF6">Workflow 01</div>
+    <div class="sec-title">AI voice call</div>
+    <div class="sec-desc">End-to-end flow from when a customer dials the business, through the AI receptionist handling the call, to CRM update and staff notification. Flow B covers missed call recovery — the automated SMS follow-up sequence that fires when no one answers.</div>
+  </div>
+  <div class="card stepper-card" id="sw1"></div>
+</section>
+
+<!-- ── WORKFLOW 2 ─────────────────────────────────────────────────────────── -->
+<section id="sec-wf2" class="section">
+  <div class="sec-header">
+    <div class="sec-eyebrow" style="color:#10B981">Workflow 02</div>
+    <div class="sec-title">Omnichannel chat</div>
+    <div class="sec-desc">WhatsApp, Instagram DM, SMS, and website chat all feed into one unified pipeline and inbox. Flow B covers proactive broadcast campaigns and automated re-engagement sequences — turning cold leads into active conversations.</div>
+  </div>
+  <div class="card stepper-card" id="sw2"></div>
+</section>
+
+<!-- ── WORKFLOW 3 ─────────────────────────────────────────────────────────── -->
+<section id="sec-wf3" class="section">
+  <div class="sec-header">
+    <div class="sec-eyebrow" style="color:#F59E0B">Workflow 03</div>
+    <div class="sec-title">Outbound sales</div>
+    <div class="sec-desc">AI dials leads from a configured campaign list, qualifies them in natural conversation, handles objections, and books meetings or live transfers. Non-converters are automatically enrolled in a multi-touch SMS, email, and call follow-up sequence.</div>
+  </div>
+  <div class="card stepper-card" id="sw3"></div>
+</section>
+
+</main>
+
+<script>
+/* ═══ NAVIGATION ════════════════════════════════════════════════════════════ */
+function show(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('sec-' + id).classList.add('active');
+  const nav = document.querySelector(`.nav-item[data-sec="${id}"]`);
+  if (nav) nav.classList.add('active');
+  document.getElementById('main').scrollTop = 0;
+}
+
+/* ═══ STAGE DATA ════════════════════════════════════════════════════════════ */
+
+const WF1 = [
+  {f:'A', sigs:['Twilio / Telnyx','SIP trunk','Vapi session','Redis TTL'],
+   t:'Customer dials the business',
+   e:'The customer calls the business\'s regular phone number. It rings once or twice and is answered immediately by the AI. From the caller\'s perspective it feels exactly like reaching a real front-desk receptionist — no menus, no hold music.',
+   u:['The business number is a Twilio or Telnyx number — or their existing number forwarded via a SIP trunk configured in Twilio','Twilio fires <code>POST /webhooks/voice/inbound</code> to the NestJS backend the instant the call lands — the backend returns a TwiML XML response within milliseconds','The TwiML instructs Twilio to bridge the call into a Vapi real-time voice session via SIP — Vapi then takes full control of the audio pipeline','Vapi loads the tenant config from PostgreSQL: AI persona, system prompt, ElevenLabs voice model ID, and available LangChain tools','A <code>call_sessions</code> record is created in PostgreSQL and the session ID is cached in Redis with a 4-hour TTL for context persistence']},
+
+  {f:'A', sigs:['ElevenLabs TTS','WebRTC','Deepgram ASR','LangChain init'],
+   t:'AI receptionist greets the caller',
+   e:'"Hi, thanks for calling [Business Name], this is [AI Name] — how can I help you today?" The voice is warm and natural with realistic pacing and breathing. If the owner set up voice cloning, it literally sounds like them answering the phone.',
+   u:['ElevenLabs streams TTS audio in real-time using the tenant\'s configured voice model — text chunks are piped as they\'re generated, not after the full response completes','Vapi manages the WebRTC audio pipeline with a round-trip latency target of under 600ms from LLM text output to audio reaching the caller\'s ear','LangChain initialises the conversation chain with: system prompt (AI persona + business rules), an empty message history, and the toolset (RAG search, CRM write, calendar)','Deepgram handles real-time ASR — the caller\'s speech is transcribed word-by-word and each completed turn is fed to the LLM as a new user message','The live call transcript streams to the <code>call_logs</code> table in PostgreSQL in real time so staff can follow along in the dashboard']},
+
+  {f:'A', sigs:['Function calling','Entity extraction','PostgreSQL upsert','BullMQ async'],
+   t:'AI collects the caller\'s details',
+   e:'"Could I grab your name and the best number to reach you on?" The caller answers naturally. No press-1 menus. The AI listens, confirms what it heard, and moves forward — collecting name, phone, email, and reason for the call.',
+   u:['OpenAI function calling extracts structured entities from the conversation as it flows: <code>{ name, phone, email, intent }</code> — no rigid form-fill','Contact upserted in PostgreSQL: <code>INSERT INTO contacts (...) ON CONFLICT (phone, tenant_id) DO UPDATE SET name=…, updated_at=now()</code>','A BullMQ async job is queued to push the contact to HubSpot/GoHighLevel — runs entirely in the background so it does not slow the live call','Contact tagged with <code>source: "voice_call"</code> and linked to the active call session ID in the database','If this phone number already exists for this tenant, the AI can greet them by name on any future call — first-time recognition built in']},
+
+  {f:'A', sigs:['RAG pipeline','Vector search','GPT-4o grounding','Confidence threshold'],
+   t:'AI answers questions about the business',
+   e:'"Do you offer weekend slots?" "What does a full service cost?" The AI answers accurately and confidently — as if it has been with the company for years — drawing only from the business\'s own uploaded documents and FAQs.',
+   u:['The caller\'s question is embedded using <code>text-embedding-ada-002</code> into a 1536-dimension vector in real time','Cosine similarity search runs against the tenant\'s knowledge base in the vector store: <code>SELECT chunks ORDER BY embedding &lt;=&gt; $query_vec LIMIT 5</code>','Top 3 matching chunks are injected into the LLM\'s context window as retrieved knowledge — this is the RAG step that grounds every answer','GPT-4o generates a response using only the retrieved context with an explicit instruction not to go outside it — zero hallucination by design','If no chunk exceeds the confidence threshold, the AI replies: "Let me have someone follow up on that" and flags the gap in a <code>knowledge_gaps</code> table for staff to review']},
+
+  {f:'A', sigs:['Cal.com API','Availability check','Interactive booking','CRM deal'],
+   t:'Customer books an appointment',
+   e:'"I\'d like to book a visit." The AI checks real-time availability, offers two or three slots naturally in conversation, and confirms the booking on the spot — all within the same call. A confirmation email lands in the customer\'s inbox seconds later.',
+   u:['LangChain triggers the <code>check_availability</code> tool → <code>GET /api/v1/availability</code> from Cal.com with the tenant\'s event type ID and a date range','Available slots come back as JSON; the AI presents 2–3 options: "I have Thursday at 10am or Friday at 2pm — which suits you better?"','On confirmation, <code>create_booking</code> fires → <code>POST /api/v1/bookings</code> with attendee name, email, phone, and the confirmed time slot','Cal.com sends the automated confirmation email to the customer; a CRM appointment record is created via an async BullMQ job','Booking written to the platform\'s <code>bookings</code> table and linked to the contact record in PostgreSQL for full timeline tracking']},
+
+  {f:'A', sigs:['FCM push','AI summary','Analytics event','CRM sync'],
+   t:'Call ends — summary saved, staff notified',
+   e:'The AI wraps up warmly. The customer gets a confirmation SMS. The business owner\'s phone buzzes: "New call — James Brown booked a boiler service for Thursday 10am." Everything is already in the CRM before they\'ve finished reading the notification.',
+   u:['Vapi ends the session and fires a status webhook containing the complete call transcript to <code>POST /webhooks/voice/completed</code>','Transcript saved to <code>call_logs</code>; GPT-4o generates a structured summary: reason for call, outcome, key details, and a sentiment score (0–1 float)','Firebase Cloud Messaging push notification dispatched to all registered owner and staff devices via the mobile app','Analytics event written: <code>call_duration</code>, <code>outcome: "booked"</code>, <code>sentiment_score</code>, <code>lead_id</code>, <code>channel: "voice"</code>','CRM deal and activity note updated with the AI call summary via the BullMQ worker — zero manual data entry required for the team']},
+
+  {f:'B', sigs:['Status callback','DNC check','BullMQ delay','Missed call log'],
+   t:'Missed call detected',
+   e:'The customer called but nobody answered. Maybe the AI was temporarily offline, the business uses a hybrid human-first setup, or the call dropped before pickup. The system catches this in real time without any human needing to notice.',
+   u:['Twilio fires <code>POST /webhooks/voice/status-callback</code> with <code>CallStatus: "no-answer"</code> or <code>"busy"</code> — caught by the missed call service','Missed call service checks: is SMS recovery enabled? Is this number on the DNC list? Was it already messaged in the last 2 hours?','If all checks pass, a BullMQ job is created with a 45-second delay — intentionally not instant, so it feels like a person noticed and reached out','Contact record created or updated: <code>missed_call_at</code> timestamp written, <code>missed_call_count</code> incremented in PostgreSQL','Event logged to the analytics dashboard under "missed opportunities" with the caller number, time, and whether it was inside business hours']},
+
+  {f:'B', sigs:['Twilio SMS','Personalised template','Thread created','Inbox update'],
+   t:'Auto SMS sent to the caller',
+   e:'45 seconds after the missed call, the customer\'s phone buzzes: "Hi! Sorry we missed your call. I\'m [AI Name] from [Business]. Can I help? Just reply here." Sent from the business\'s own number — familiar, not a spam shortcode.',
+   u:['BullMQ processes the job and calls Twilio Messages API: <code>POST /Messages</code> with <code>From</code> (business number), <code>To</code> (caller number), <code>Body</code> (personalised template)','Message written to the <code>messages</code> table: <code>status: "sent"</code>, <code>direction: "outbound"</code>, <code>thread_type: "missed_call_recovery"</code>','A new conversation thread is opened in the messaging service, primed and ready to handle an inbound reply at any point','If the caller already exists in the tenant\'s CRM, the SMS is automatically linked to their contact record and activity timeline','The missed call and outbound SMS appear together in the unified inbox — staff see the full timeline in one place, not two separate events']},
+
+  {f:'B', sigs:['Conversation router','Thread match','Full AI toolset','CRM attribution'],
+   t:'Customer replies — AI continues over SMS',
+   e:'"Hi yes, I need to get my boiler checked." The AI continues the conversation seamlessly over SMS — asks the right follow-up questions, checks availability, books the appointment. The entire story — missed call, recovery SMS, chat thread — appears as one timeline in the dashboard.',
+   u:['Inbound SMS triggers the full messaging pipeline: Twilio webhook → signature check → Redis dedup → message normaliser → conversation router','The router matches the reply to the open <code>missed_call_recovery</code> thread using the caller\'s phone number as the lookup key','Same LangChain + GPT-4o engine handles the SMS reply with the full RAG knowledge base and Cal.com booking tools active','Contact, booking, and conversation synced to CRM; a WebSocket event pushes the inbox update to the dashboard in real time','Staff can click "Claim" in the unified inbox at any point to take over — the AI hands off cleanly with full context already loaded']}
+];
+
+const WF2 = [
+  {f:'A', ch:['WhatsApp','Instagram DM','SMS','Website chat'],
+   t:'Customer sends a message',
+   e:'The customer opens WhatsApp (or Instagram DM, SMS, or the website chat widget) and sends a message: "Hi, are you open on weekends?" It\'s just a normal conversation from their end — they\'re messaging the business like they\'d message a friend.',
+   u:['The business has a WhatsApp Business Account (WABA) registered with Meta, accessed via the WhatsApp Cloud API directly or through Twilio\'s WhatsApp channel','Meta delivers the message by firing <code>POST /webhooks/whatsapp/inbound</code> to the registered NestJS controller','NestJS immediately returns <code>HTTP 200</code> to Meta before any processing starts — Meta requires a response within 5 seconds or it retries the delivery, causing duplicate messages','The raw payload is dropped into a BullMQ queue for async processing, decoupling the webhook acknowledgement from all business logic','For Instagram DMs and Facebook Messenger, the same pattern applies via the Meta Graph API webhook — different payload shape, same normalisation pipeline']},
+
+  {f:'A', ch:['WhatsApp','Instagram DM','SMS','Website chat'],
+   t:'Webhook validated and message normalised',
+   e:'Invisible to the customer — happens in under 100ms. The system validates the message is genuine, checks it hasn\'t been seen before, and converts it into one unified internal format regardless of which channel it came from.',
+   u:['<code>X-Hub-Signature-256</code> header validated using HMAC-SHA256 with the Meta App Secret — requests with invalid signatures are rejected with 403','Redis <code>SETNX</code> check on the <code>message_id</code> with a 10-minute TTL — if the key already exists, the message is a duplicate and is silently discarded','Message normalised to the unified schema: <code>{ id, externalId, tenantId, channel, from, body, mediaUrls, timestamp, raw }</code>','If the message contains an image or document, the <code>media_id</code> is used to fetch the file from Meta\'s servers and store it in S3','The tenant is identified by mapping the "to" phone number or page ID to a <code>tenant_id</code> in PostgreSQL — each tenant has their own channel config']},
+
+  {f:'A', ch:['WhatsApp','Instagram DM','SMS','Website chat'],
+   t:'Customer identified and context loaded',
+   e:'If this customer has messaged before, the AI remembers them and picks up where they left off. If it\'s their first message, a new contact record is silently created in the background.',
+   u:['Contact lookup: <code>SELECT * FROM contacts WHERE phone = $from AND tenant_id = $tid LIMIT 1</code> — if found, full profile loaded including CRM notes and previous conversation history','If new: <code>INSERT INTO contacts (tenant_id, phone, source: "whatsapp", created_at)</code> — contact also queued for async CRM push via BullMQ','Redis session check: <code>GET session:{tenantId}:{phone}</code> — if an active session exists (within configurable window, default 30 min), the conversation thread is resumed','If no active session: a new thread is created and LangChain is initialised fresh with the system prompt, business rules, and toolset for this tenant','Conversation history (last 10 messages) loaded from PostgreSQL and passed to LangChain as prior context — the AI has memory of the conversation']},
+
+  {f:'A', ch:['WhatsApp','Instagram DM','SMS','Website chat'],
+   t:'AI responds to the message',
+   e:'"Hi! We\'re open Monday to Saturday, 8am to 6pm. Is there anything else I can help with?" The response arrives in 2–3 seconds. On WhatsApp the customer sees the typing indicator before the message lands — it feels like a real person.',
+   u:['If the question requires business knowledge, the RAG pipeline fires: question embedded → vector search → top 3 chunks retrieved and injected into LLM context before response generation','GPT-4o generates the response grounded in retrieved context — cannot answer outside the knowledge base by design','For WhatsApp: response sent via <code>POST /v18.0/{phone_number_id}/messages</code> with <code>messaging_product: "whatsapp"</code>, <code>to</code>, <code>type: "text"</code>, <code>text.body</code>','The WhatsApp typing indicator is sent first via the Contacts typing API before the actual message dispatches — this simple step dramatically improves the human-feel','Message delivery status tracked via Meta status webhooks: <code>sent → delivered → read</code> — each state written back to the <code>messages</code> table in real time']},
+
+  {f:'A', ch:['WhatsApp','Instagram DM','SMS','Website chat'],
+   t:'Customer asks a question or books an appointment',
+   e:'"How much does a full service cost?" — AI answers accurately. "Can I book one for next week?" — AI checks live availability and offers time slots. On WhatsApp it can send interactive tap-to-select buttons, so the customer just taps a slot rather than typing.',
+   u:['Price and service questions: full RAG pipeline fires (embed → vector search → retrieve chunks → GPT-4o grounded answer) — same mechanism as voice','Booking request: LangChain triggers <code>check_availability</code> tool → Cal.com API returns available slots as JSON for the tenant\'s configured event type','WhatsApp Interactive Messages API used to send List Messages or Quick Reply buttons — far better UX than asking the customer to type a time slot manually','On tap or text confirmation: <code>create_booking</code> tool fires → <code>POST /api/v1/bookings</code> with attendee details and confirmed slot','Cal.com sends the confirmation email automatically; a CRM appointment record is created via a BullMQ worker running asynchronously']},
+
+  {f:'A', ch:['WhatsApp','Instagram DM','SMS','Website chat'],
+   t:'Conversation closes — everything synced',
+   e:'Customer gets booking confirmation in the same chat thread. Business owner gets a push notification. Staff open the unified inbox and see the full conversation, the contact record, and the CRM deal — all already populated. Zero manual work.',
+   u:['Conversation thread marked as <code>resolved</code> or left open for follow-ups based on tenant config — configurable timeout per business','GPT-4o generates an AI summary of the conversation and saves it to the messages thread, linked to the contact record in PostgreSQL','CRM contact updated: <code>last_contact_channel: "whatsapp"</code>, <code>booking_created: true</code>, conversation summary written as a CRM note','Firebase Cloud Messaging push notification dispatched to the business owner\'s mobile app with the outcome summary','Analytics event written: <code>outcome: "booked"</code>, <code>channel: "whatsapp"</code>, <code>avg_response_time_ms</code>, <code>message_count</code>, <code>rag_queries_used</code>']},
+
+  {f:'B', ch:['WhatsApp'],
+   t:'Business sends a broadcast campaign',
+   e:'The business owner logs into the dashboard, picks a contact segment ("all leads who haven\'t booked in 3 months"), selects an approved message template, and hits send. Every selected customer receives a personalised WhatsApp message within minutes.',
+   u:['WhatsApp only allows outbound messages using pre-approved Message Templates (HSMs) — free-form messages can only be sent within the 24-hour window after a customer initiates contact','Template variables are populated with live contact data: <code>{{1}} = first_name</code>, <code>{{2}} = last_service_date</code> — pulled from PostgreSQL per contact','BullMQ processes the broadcast as a batched job at a rate-limited pace — WhatsApp enforces per-WABA and per-phone-number sending limits that must be respected','Each message sent via <code>POST /messages</code> with <code>type: "template"</code>, <code>template.name</code>, <code>language</code>, and the <code>components</code> array with variable values','All sent messages logged to the <code>messages</code> table and linked to a <code>campaign_id</code>; delivery and read webhooks update the campaign analytics dashboard in real time']},
+
+  {f:'B', ch:['WhatsApp'],
+   t:'Customer replies to the campaign',
+   e:'"Hi James, it\'s been a while — would you like to book a service?" Customer replies: "Yes actually, what\'s available next week?" That single reply opens a 24-hour window where the AI can now hold a full free-form conversation with them.',
+   u:['The reply arrives as a standard inbound webhook — the same full pipeline runs: validate → normalise → router','Conversation router identifies this as a reply to a campaign: <code>SELECT campaigns WHERE contact_id = $id AND status = "active"</code> matches the open outbound thread','The 24-hour customer service window is now open — the business can send free-form messages without needing a pre-approved template for the next 24 hours','LangChain is initialised with the campaign context (what the broadcast was about, the contact\'s history) already in the system prompt for continuity','Contact engagement tracked: <code>campaign_reply: true</code>, <code>last_engaged_at</code> updated, campaign <code>reply_count</code> incremented in the analytics table']},
+
+  {f:'B', ch:['WhatsApp'],
+   t:'AI closes the loop and attributes the conversion',
+   e:'"Hi James! I have Thursday at 10am or Friday at 2pm — which works?" The AI books the appointment in the same thread. The dashboard shows the full campaign funnel: messages sent → replies → appointments booked.',
+   u:['Full booking flow: Cal.com availability check → interactive WhatsApp slot buttons sent → customer taps → <code>create_booking</code> API call fires','Conversion event written to the analytics table: <code>source: "broadcast_campaign"</code>, <code>campaign_id</code>, <code>contact_id</code>, <code>outcome: "booked"</code>','CRM deal marked as converted with campaign attribution — the business can see exactly which campaign drove the booking and calculate ROI','Business owner sees the full funnel in the dashboard: "Sent 150 → 23 replies (15%) → 18 bookings (78% reply-to-book rate)"','The conversation is added to the contact\'s full timeline alongside their voice calls and previous chat threads — one complete customer picture']}
+];
+
+const WF3 = [
+  {f:'A', sigs:['CSV import','Campaign config','BullMQ scheduler','Timezone detection'],
+   t:'Lead list uploaded and campaign configured',
+   e:'The business owner uploads a CSV of leads — or syncs directly from their CRM — selects the AI\'s goal ("qualify leads for a demo"), sets calling hours, picks the voice persona, and hits Launch. The system manages everything from there.',
+   u:['CSV parsed, validated, and contacts bulk-inserted into the <code>contacts</code> table — duplicates detected and merged via phone/email uniqueness constraint per tenant','Campaign record created in PostgreSQL: <code>{ campaign_id, tenant_id, goal, script_template, calling_hours, max_attempts, voice_model_id }</code>','A BullMQ job is created for each contact, scheduled to fire within the configured calling hours — jobs outside the window are held in "delayed" state','Timezone detection: the contact\'s phone area code is mapped to a timezone if no explicit timezone is set on the lead record — calling hours are always respected locally','Redis sorted set used as a priority queue: <code>ZADD campaign:{id}:queue {scheduled_timestamp} {contact_id}</code>']},
+
+  {f:'A', sigs:['Twilio dialler','Local presence','Vapi outbound','Attempt log'],
+   t:'AI dials the lead',
+   e:'The lead\'s phone rings showing the business number — or a local area code number if local presence is enabled, which significantly improves answer rates. From the lead\'s perspective it\'s just an incoming call from a local number.',
+   u:['BullMQ worker picks up the job and initiates the call via Twilio: <code>POST /Accounts/{SID}/Calls</code> with <code>To</code>, <code>From</code>, and a <code>StatusCallback</code> URL','Local presence: Telnyx automatically dials from a number with the same area code as the lead — this alone can lift answer rates by 30–40% vs a generic business number','If no answer: Twilio status callback fires with <code>CallStatus: "no-answer"</code> → attempt count incremented, job rescheduled for the next calling window','If answered: Vapi voice session initialised immediately with the outbound context — lead\'s name, campaign goal, source, and AI persona all loaded','Call attempt logged to <code>call_attempts</code>: <code>{ campaign_id, contact_id, attempt_number, dialled_at, status, call_sid }</code>']},
+
+  {f:'A', sigs:['Personalised opener','Deepgram ASR','Qualification signals','Redis scoring'],
+   t:'Lead answers — AI introduces and qualifies',
+   e:'"Hi, is this Sarah? Great — this is [AI Name] calling from [Business]. I\'m reaching out because you filled out our form last week about your HVAC system. Do you have 2 minutes?" Natural, confident, personalised — not a robo-call.',
+   u:['LangChain initialises with the outbound system prompt: AI persona, campaign goal, lead\'s first name, source ("filled out our form last week"), and any existing CRM context','The opener is dynamically built from lead data — personalisation at this level measurably increases engagement rates vs generic openers','Deepgram ASR transcribes the lead\'s responses in real time, feeding each completed turn to the LLM as a new user message in the conversation','LLM tracks qualification signals via function calling: as the conversation flows, it updates <code>budget_confirmed</code>, <code>timeline_confirmed</code>, <code>decision_maker_confirmed</code>, <code>pain_point_identified</code>','Each signal updates the lead score in real time via Redis <code>HSET lead:{id}:signals budget 1 timeline 1</code> — visible live in the campaign dashboard']},
+
+  {f:'A', sigs:['Objection detection','Playbook retrieval','Disposition tagging','Call events log'],
+   t:'AI handles objections',
+   e:'"I\'m not really interested right now." AI: "Totally understand — can I ask what the main reason is? Is it timing or budget?" The AI doesn\'t fold on the first pushback. It probes, handles the objection from the configured playbook, and pivots.',
+   u:['Objection detection: GPT-4o classifies the lead\'s statement into categories: <code>{ timing, budget, not_decision_maker, competitor, already_sorted, not_interested }</code>','Each objection type maps to a response playbook stored in the campaign config in PostgreSQL — the correct counter is retrieved and passed to GPT-4o as additional context','If the objection is successfully navigated, the conversation continues and the lead\'s score is updated to reflect the recovery','If unresolvable ("We already signed with a competitor"): AI exits gracefully, lead marked <code>disposition: "disqualified"</code>, <code>reason: "competitor"</code>','All objections, AI responses, and resolutions logged as structured events in <code>call_events</code> — this data feeds the coaching analytics and helps optimise the playbook over time']},
+
+  {f:'A', sigs:['Cal.com booking','Warm transfer','Lead scoring','CRM deal push'],
+   t:'Lead is interested — AI books or transfers',
+   e:'"Yeah actually I\'d love to know more." AI: "Brilliant — let me check availability for a quick 15-minute call with our team. Are mornings or afternoons better?" Booked before they hang up. Or the AI warm-transfers them to a live rep on the spot.',
+   u:['LangChain triggers <code>check_availability</code> → Cal.com API returns available slots for the sales team\'s calendar for the next 5 business days','Booking confirmed: <code>POST /api/v1/bookings</code> — confirmation SMS and email dispatched to the lead automatically with the meeting details and link','Warm transfer option: Vapi connects the live sales rep to the active call, the AI briefly introduces the lead and then drops off cleanly','Lead CRM record updated: <code>stage: "meeting_booked"</code>, <code>lead_score: [calculated]</code>, <code>next_action: "demo_call"</code>, <code>assigned_rep: [rep_id]</code>','Full call transcript and AI-generated summary pushed to the CRM deal record — the sales rep walks into the meeting fully briefed with no manual notes needed']},
+
+  {f:'A', sigs:['Lead scoring','GPT-4o summary','Campaign analytics','Sequence trigger'],
+   t:'Call ends — lead scored and CRM updated',
+   e:'Invisible to everyone — but by the time a sales rep opens their CRM, every call is already logged with a structured summary, a lead score out of 100, the objections raised, and a recommended next action. No manual notes required.',
+   u:['GPT-4o generates structured call output: <code>{ disposition, lead_score, qualification_signals, objections_raised, summary, recommended_next_action }</code>','Lead score formula: <code>(signals_confirmed / total_signals) × 100</code> — signal weighting configurable per campaign (e.g. budget = 40pts, timeline = 30pts, decision maker = 30pts)','CRM deal updated via API: stage, lead_score, call_notes, booking details if applicable — all fields mapped to the CRM\'s specific schema','Campaign analytics updated atomically: <code>calls_made, calls_answered, qualified, booked, disqualified, avg_call_duration, avg_lead_score</code>','If <code>lead_score &gt; threshold</code> and no booking was made, the lead is automatically enrolled into the Flow B follow-up sequence — no human action required']},
+
+  {f:'B', sigs:['Sequence config','Disposition routing','Drip logic','Sequence jobs'],
+   t:'Lead not ready — follow-up sequence triggers',
+   e:'"48 calls made, 31 answered, 12 qualified, 8 booked, 11 in follow-up." The dashboard shows the full picture. For every lead that didn\'t convert on the call, the system automatically manages what happens next across multiple channels.',
+   u:['Leads that hit max call attempts with no answer get <code>disposition: "no_answer"</code> and are enrolled in the multi-touch follow-up sequence','Leads who answered but weren\'t ready get <code>disposition: "nurture"</code> and are placed in a longer-cadence drip sequence with softer messaging','Sequence config stored in PostgreSQL: <code>{ step, delay_hours, channel, template_id }</code> — e.g. day 1 SMS, day 3 email, day 7 call retry','BullMQ schedules each step with the configured delay — jobs fire at the right time on the right channel automatically without any manual intervention','All sequence activity tagged with <code>campaign_id</code>, <code>contact_id</code>, <code>sequence_step</code>, and <code>channel</code> for full multi-touch attribution tracking']},
+
+  {f:'B', sigs:['SMS','Email via SendGrid','Voicemail drop','Warm re-engagement script'],
+   t:'Automated follow-up touches fire on schedule',
+   e:'Day 1: SMS — "Hi Sarah, I tried calling earlier. Would a quick chat be useful? Pick a time here: [link]." Day 3: a personalised follow-up email. Day 7: another call attempt with a warm re-engagement opener referencing the previous conversation.',
+   u:['SMS via Twilio Messages API — personalised with first name, campaign context, and a direct Cal.com booking link embedded as a short URL','Email via SendGrid or Resend API — HTML template with personalised opener, concise value prop, and a prominent one-click booking CTA','Day 7 call: new Vapi outbound session with a warm re-engagement script — "Hi Sarah, I reached out last week about your HVAC setup — has anything changed since then?"','Optional voicemail drop: if no answer on day 7, Twilio can drop a pre-recorded voicemail using answering machine detection without the phone ringing through','If the lead clicks the Cal.com link and self-books at any point: all remaining sequence jobs are immediately cancelled — <code>BullMQ job.remove()</code> fires for every pending step']},
+
+  {f:'B', sigs:['Re-engagement','Context recall','Conversion attribution','ROI dashboard'],
+   t:'Lead re-engages — AI picks up and closes',
+   e:'"Actually, now is a good time." Whether they reply to the SMS, click the booking link, or pick up the Day 7 call — the AI picks up with full memory of the previous conversation and closes the loop. The dashboard tracks exactly which touch point converted them.',
+   u:['SMS reply: messaging pipeline triggers → conversation router matches the open sequence thread → LangChain loads the previous call context, objections raised, and full sequence history','Self-booking via link: Cal.com webhook fires → all remaining sequence jobs cancelled, <code>lead.status = "booked"</code>, CRM deal advanced to next stage automatically','Day 7 call: Vapi outbound session initialised with context injection — "Last time we spoke you mentioned timing was the issue — has anything changed since then?"','Conversion event written: <code>{ source: "outbound_campaign", campaign_id, sequence_step_converted: 3, total_touches: 3, days_to_convert: 7 }</code>','Campaign ROI dashboard: calls made → answered → qualified → booked → deal value — full funnel with revenue attribution if deal value is set in the CRM record']}
+];
+
+/* ═══ WORKFLOW STEPPER CLASS ════════════════════════════════════════════════ */
+
+class WorkflowStepper {
+  constructor(containerId, stages, cfg) {
+    this.el = document.getElementById(containerId);
+    this.id = containerId;
+    this.stages = stages;
+    this.cfg = cfg;
+    this.cur = 0;
+    this._build();
+  }
+
+  _build() {
+    this.el.innerHTML = `
+      <div class="flow-pills-row" id="${this.id}-pills"></div>
+      <div id="${this.id}-stage"></div>
+      <div class="stage-nav">
+        <button class="snav-btn" id="${this.id}-prev">← Previous</button>
+        <span class="stage-ctr" id="${this.id}-ctr"></span>
+        <button class="snav-btn" id="${this.id}-next">Next →</button>
+      </div>`;
+
+    const pillsEl = document.getElementById(this.id + '-pills');
+    const { flowASplit, flowALabel, flowBLabel } = this.cfg;
+
+    const makeGroup = (label, from, to) => {
+      const g = document.createElement('div');
+      g.innerHTML = `<div class="flow-group-lbl">${label}</div>`;
+      const row = document.createElement('div');
+      row.className = 'pills-row';
+      for (let i = from; i < to; i++) {
+        const p = document.createElement('span');
+        p.className = 'sp';
+        p.id = `${this.id}-p${i}`;
+        p.textContent = i + 1;
+        p.onclick = ((idx) => () => { this.cur = idx; this._render(); })(i);
+        row.appendChild(p);
+      }
+      g.appendChild(row);
+      return g;
+    };
+
+    pillsEl.appendChild(makeGroup(flowALabel, 0, flowASplit));
+    const div = document.createElement('div');
+    div.className = 'flow-div';
+    pillsEl.appendChild(div);
+    pillsEl.appendChild(makeGroup(flowBLabel, flowASplit, this.stages.length));
+
+    document.getElementById(`${this.id}-prev`).onclick = () => this.go(-1);
+    document.getElementById(`${this.id}-next`).onclick = () => this.go(1);
+
+    this._render();
+  }
+
+  _pills() {
+    const { flowASplit, pillBgA, pillBgB, accentA, accentB, pillTxtA, pillTxtB } = this.cfg;
+    for (let i = 0; i < this.stages.length; i++) {
+      const p = document.getElementById(`${this.id}-p${i}`);
+      if (!p) continue;
+      const isA = i < flowASplit;
+      if (i === this.cur) {
+        p.style.cssText = `background:${isA ? pillBgA : pillBgB};border-color:${isA ? accentA : accentB};color:${isA ? pillTxtA : pillTxtB}`;
+        p.className = 'sp';
+      } else {
+        p.style.cssText = '';
+        p.className = 'sp' + (i < this.cur ? ' done' : '');
+      }
+    }
+  }
+
+  _render() {
+    this._pills();
+    const s = this.stages[this.cur];
+    const { cfg, cur } = this;
+    const isB = s.f === 'B';
+    const badgeBg   = isB ? cfg.pillBgB   : cfg.pillBgA;
+    const badgeTxt  = isB ? cfg.pillTxtB  : cfg.pillTxtA;
+    const flowLabel = isB ? cfg.flowBLabel : cfg.flowALabel;
+    const cardAcc   = isB ? cfg.accentB   : cfg.accentA;
+    const techAcc   = isB ? cfg.accentA   : cfg.accentB;
+
+    const chips = (s.sigs || s.ch || []).map(c => `<span class="sig-tag">${c}</span>`).join('');
+    const lis   = s.u.map(t => `<li>${t}</li>`).join('');
+    const expHd = s.f === 'A' && this.id === 'sw3' ? 'What happens' : 'Customer experience';
+
+    document.getElementById(`${this.id}-stage`).innerHTML = `
+      <span class="stage-badge" style="background:${badgeBg};color:${badgeTxt}">
+        Flow ${s.f} &nbsp;·&nbsp; ${flowLabel} &nbsp;·&nbsp; Stage ${cur + 1} of ${this.stages.length}
+      </span>
+      <div class="stage-title">${s.t}</div>
+      ${chips ? `<div class="sig-row">${chips}</div>` : ''}
+      <div class="stage-cards">
+        <div class="sc" style="border-left:3px solid ${cardAcc}">
+          <div class="sc-hd" style="color:${cardAcc}">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            ${expHd}
+          </div>
+          <div class="sc-body">${s.e}</div>
+        </div>
+        <div class="sc" style="border-left:3px solid ${techAcc}">
+          <div class="sc-hd" style="color:${techAcc}">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+            Under the hood
+          </div>
+          <div class="sc-body"><ul>${lis}</ul></div>
+        </div>
+      </div>`;
+
+    document.getElementById(`${this.id}-prev`).disabled = cur === 0;
+    document.getElementById(`${this.id}-next`).disabled = cur === this.stages.length - 1;
+    document.getElementById(`${this.id}-ctr`).textContent = `${cur + 1} of ${this.stages.length}`;
+  }
+
+  go(d) {
+    this.cur = Math.max(0, Math.min(this.stages.length - 1, this.cur + d));
+    this._render();
+  }
+}
+
+/* ═══ INIT ══════════════════════════════════════════════════════════════════ */
+
+new WorkflowStepper('sw1', WF1, {
+  flowASplit: 6,
+  flowALabel: 'Flow A — AI voice call',
+  flowBLabel: 'Flow B — Missed call recovery',
+  accentA: '#8B5CF6', accentB: '#EC4899',
+  pillBgA: '#F5F3FF', pillBgB: '#FDF2F8',
+  pillTxtA: '#5B21B6', pillTxtB: '#9D174D'
+});
+
+new WorkflowStepper('sw2', WF2, {
+  flowASplit: 6,
+  flowALabel: 'Flow A — Inbound chat',
+  flowBLabel: 'Flow B — Broadcast & re-engagement',
+  accentA: '#10B981', accentB: '#F97316',
+  pillBgA: '#ECFDF5', pillBgB: '#FFF7ED',
+  pillTxtA: '#065F46', pillTxtB: '#7C2D12'
+});
+
+new WorkflowStepper('sw3', WF3, {
+  flowASplit: 6,
+  flowALabel: 'Flow A — AI outbound call',
+  flowBLabel: 'Flow B — Multi-touch follow-up',
+  accentA: '#6366F1', accentB: '#F59E0B',
+  pillBgA: '#EEF2FF', pillBgB: '#FFF7ED',
+  pillTxtA: '#3730A3', pillTxtB: '#78350F'
+});
+</script>
+</body>
+</html>
