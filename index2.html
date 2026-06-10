@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Enterprise AI Customer Operations Platform — Neurosphere</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+/* ── DARK THEME (default) ── */
+:root,[data-theme="light"]{
+  --bg:#06090f;
+  --bg2:#0d1220;
+  --bg3:#111827;
+  --surface:rgba(13,18,32,0.7);
+  --surface2:rgba(13,18,32,0.5);
+  --border:rgba(59,130,246,0.18);
+  --border2:rgba(255,255,255,0.05);
+  --text:#f8fafc;
+  --text2:#94a3b8;
+  --text3:#475569;
+  --blue:#3b82f6;
+  --blue2:#60a5fa;
+  --blue-dim:#1d3a6e;
+  --gold:#f59e0b;
+  --gold2:#fbbf24;
+  --teal:#14b8a6;
+  --glow:rgba(59,130,246,0.35);
+  --dot-color:rgba(59,130,246,0.06);
+  --code-bg:#0a0e1a;
+  --code-border:rgba(59,130,246,0.2);
+  --orb-opacity:.18;
+  --card-hover:rgba(29,58,110,0.2);
+  --pillar-hover:rgba(29,58,110,0.2);
+  --tier-super-bg:rgba(245,158,11,0.12);
+  --tier-agency-bg:rgba(59,130,246,0.12);
+  --tier-client-bg:rgba(20,184,166,0.12);
+  --tech-row-bg:rgba(13,18,32,0.5);
+  --own-item-bg:rgba(13,18,32,0.5);
+  --step-blue-bg:rgba(59,130,246,0.08);
+  --step-blue-border:rgba(59,130,246,0.3);
+  --toggle-bg:rgba(13,18,32,0.8);
+  --toggle-border:rgba(59,130,246,0.3);
+  --nav-bg:rgba(13,18,32,0.8);
+  --topnav-bg:rgba(6,9,15,0.85);
+  --topnav-line:rgba(59,130,246,0.2);
+  --flow-node-bg:rgba(13,18,32,0.7);
+  --info-box-bg:rgba(59,130,246,0.08);
+  --info-box-border:rgba(59,130,246,0.25);
+}
+
+/* ── LIGHT THEME ── */
+[data-theme="light"]{
+  --bg:#f0f4f8;
+  --bg2:#e8eef5;
+  --bg3:#dce6f0;
+  --surface:rgba(255,255,255,0.85);
+  --surface2:rgba(255,255,255,0.65);
+  --border:rgba(59,130,246,0.25);
+  --border2:rgba(0,0,0,0.06);
+  --text:#0f172a;
+  --text2:#475569;
+  --text3:#94a3b8;
+  --blue:#2563eb;
+  --blue2:#3b82f6;
+  --blue-dim:#bfdbfe;
+  --gold:#d97706;
+  --gold2:#f59e0b;
+  --teal:#0d9488;
+  --glow:rgba(59,130,246,0.2);
+  --dot-color:rgba(59,130,246,0.08);
+  --code-bg:#f1f5f9;
+  --code-border:rgba(59,130,246,0.2);
+  --orb-opacity:.10;
+  --card-hover:rgba(219,234,254,0.5);
+  --pillar-hover:rgba(219,234,254,0.5);
+  --tier-super-bg:rgba(245,158,11,0.08);
+  --tier-agency-bg:rgba(59,130,246,0.08);
+  --tier-client-bg:rgba(20,184,166,0.08);
+  --tech-row-bg:rgba(255,255,255,0.7);
+  --own-item-bg:rgba(255,255,255,0.7);
+  --step-blue-bg:rgba(219,234,254,0.4);
+  --step-blue-border:rgba(59,130,246,0.3);
+  --toggle-bg:rgba(255,255,255,0.9);
+  --toggle-border:rgba(59,130,246,0.3);
+  --nav-bg:rgba(240,244,248,0.9);
+  --topnav-bg:rgba(240,244,248,0.92);
+  --topnav-line:rgba(59,130,246,0.2);
+  --flow-node-bg:rgba(255,255,255,0.8);
+  --info-box-bg:rgba(219,234,254,0.3);
+  --info-box-border:rgba(59,130,246,0.25);
+}
+
+html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);transition:background .35s,color .35s}
+
+/* ── TOP NAV ── */
+#topnav{
+  position:fixed;top:0;left:0;right:0;height:52px;
+  background:var(--topnav-bg);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--topnav-line);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 24px;z-index:200;
+  transition:background .35s;
+}
+#topnav-brand{
+  font-family:'DM Mono',monospace;font-size:10px;letter-spacing:3px;
+  text-transform:uppercase;color:var(--text2);white-space:nowrap;
+}
+#topnav-dots{
+  display:flex;align-items:center;gap:0;flex:1;
+  justify-content:center;max-width:700px;margin:0 auto;
+  position:relative;
+}
+.tn-segment{display:flex;align-items:center;flex:1}
+.tn-line{flex:1;height:1px;background:var(--topnav-line);transition:background .3s}
+.tn-line.filled{background:var(--blue2)}
+.tn-dot{
+  width:8px;height:8px;border-radius:50%;
+  border:1.5px solid var(--text3);background:transparent;
+  cursor:pointer;flex-shrink:0;
+  transition:all .3s;position:relative;
+}
+.tn-dot:hover{border-color:var(--blue2);transform:scale(1.3)}
+.tn-dot.active{background:var(--blue2);border-color:var(--blue2);box-shadow:0 0 8px var(--glow);transform:scale(1.2)}
+.tn-dot.visited{background:var(--blue-dim);border-color:var(--blue2)}
+[data-theme="light"] .tn-dot.visited{background:#bfdbfe;border-color:var(--blue2)}
+.tn-dot-label{
+  position:absolute;top:14px;left:50%;transform:translateX(-50%);
+  font-family:'DM Mono',monospace;font-size:8px;color:var(--text3);
+  white-space:nowrap;letter-spacing:.5px;opacity:0;pointer-events:none;
+  transition:opacity .2s;
+}
+.tn-dot:hover .tn-dot-label{opacity:1}
+#topnav-right{display:flex;align-items:center;gap:12px;white-space:nowrap}
+#slide-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--text3);text-transform:uppercase;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+/* ── TOGGLE BUTTON ── */
+#themeToggle{
+  width:36px;height:36px;border-radius:50%;
+  border:1px solid var(--toggle-border);
+  background:var(--toggle-bg);
+  backdrop-filter:blur(12px);
+  color:var(--text2);cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;transition:all .25s;flex-shrink:0;
+}
+#themeToggle:hover{border-color:var(--blue2);color:var(--text);box-shadow:0 0 14px var(--glow)}
+
+/* ── NAV BUTTONS ── */
+#nav{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);display:flex;gap:12px;z-index:100}
+.nav-btn{
+  width:44px;height:44px;border-radius:50%;
+  border:1px solid var(--border);background:var(--nav-bg);
+  backdrop-filter:blur(12px);color:var(--text2);
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:all .2s;font-size:18px;
+}
+.nav-btn:hover{border-color:var(--blue2);color:var(--text);box-shadow:0 0 20px var(--glow)}
+.nav-btn:disabled{opacity:.2;cursor:default;pointer-events:none}
+
+/* ── COUNTER ── */
+#counter{position:fixed;bottom:32px;right:40px;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:2px;color:var(--text3);z-index:100}
+
+/* ── SLIDE WRAPPER ── */
+#deck{width:100vw;height:100vh;position:relative;padding-top:52px}
+.slide{
+  position:absolute;inset:0;padding-top:52px;
+  display:flex;flex-direction:column;justify-content:center;align-items:center;
+  padding:72px 80px 60px;
+  opacity:0;transform:translateY(24px);
+  transition:opacity .55s cubic-bezier(.4,0,.2,1),transform .55s cubic-bezier(.4,0,.2,1);
+  pointer-events:none;
+}
+.slide.active{opacity:1;transform:translateY(0);pointer-events:all}
+.slide.exit{opacity:0;transform:translateY(-20px)}
+.slide::before{
+  content:'';position:absolute;inset:0;
+  background-image:radial-gradient(circle at 1px 1px,var(--dot-color) 1px,transparent 0);
+  background-size:40px 40px;pointer-events:none;transition:opacity .35s;
+}
+
+/* ── TYPOGRAPHY ── */
+.eyebrow{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--blue2);margin-bottom:16px}
+.display{font-family:'Fraunces',serif;font-weight:700;line-height:1.05;color:var(--text)}
+.display-xl{font-size:clamp(48px,6vw,82px)}
+.display-lg{font-size:clamp(36px,4.5vw,58px)}
+.display-md{font-size:clamp(28px,3.5vw,44px)}
+.display-sm{font-size:clamp(22px,2.5vw,32px)}
+.lead{font-size:clamp(15px,1.4vw,18px);color:var(--text2);line-height:1.7;font-weight:300}
+.accent{color:var(--blue2)}.gold{color:var(--gold2)}
+.glow-text{text-shadow:0 0 60px rgba(59,130,246,0.3)}
+.divider{width:48px;height:2px;background:linear-gradient(90deg,var(--blue),var(--gold));margin:20px 0;border-radius:2px}
+
+/* ── CARD ── */
+.card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:16px;padding:24px;
+  backdrop-filter:blur(8px);transition:border-color .2s,box-shadow .2s,background .35s;
+}
+.card:hover{border-color:rgba(59,130,246,0.4);box-shadow:0 0 32px rgba(59,130,246,0.08);background:var(--card-hover)}
+.card-icon{font-size:28px;margin-bottom:12px}
+.card-title{font-family:'Fraunces',serif;font-size:16px;font-weight:600;color:var(--text);margin-bottom:6px}
+.card-body{font-size:13px;color:var(--text2);line-height:1.6}
+
+/* ── TAGS ── */
+.tag{display:inline-block;padding:4px 12px;border-radius:20px;font-size:10px;letter-spacing:1.5px;font-family:'DM Mono',monospace;text-transform:uppercase}
+.tag-blue{background:rgba(59,130,246,0.12);border:1px solid rgba(59,130,246,0.3);color:var(--blue2)}
+.tag-gold{background:rgba(245,158,11,0.12);border:1px solid rgba(245,158,11,0.3);color:var(--gold2)}
+.tag-teal{background:rgba(20,184,166,0.12);border:1px solid rgba(20,184,166,0.3);color:var(--teal)}
+
+/* ── LAYOUT ── */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:20px;width:100%}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;width:100%}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;width:100%}
+.g-half{display:grid;grid-template-columns:1fr 1.6fr;gap:40px;width:100%;align-items:center}
+
+/* ── PILLAR ── */
+.pillar{display:flex;gap:16px;align-items:flex-start;padding:20px;border-radius:12px;border:1px solid var(--border);background:var(--surface2);transition:all .2s}
+.pillar:hover{border-color:rgba(59,130,246,0.4);background:var(--pillar-hover)}
+.pillar-num{font-family:'Fraunces',serif;font-size:32px;font-weight:700;color:var(--blue-dim);line-height:1;min-width:36px}
+.pillar-title{font-size:14px;font-weight:600;color:var(--text);margin-bottom:4px}
+.pillar-desc{font-size:12px;color:var(--text2);line-height:1.5}
+
+/* ── TIER ── */
+.tier{border-radius:12px;padding:18px 22px;transition:background .35s}
+.tier-super{background:var(--tier-super-bg);border:1px solid rgba(245,158,11,0.3)}
+.tier-agency{background:var(--tier-agency-bg);border:1px solid rgba(59,130,246,0.3)}
+.tier-client{background:var(--tier-client-bg);border:1px solid rgba(20,184,166,0.3)}
+.tier-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;margin-bottom:6px}
+.tier-name{font-family:'Fraunces',serif;font-size:20px;font-weight:700;margin-bottom:4px}
+.tier-desc{font-size:12px;color:var(--text2);line-height:1.5}
+.tier-arrow{text-align:center;font-size:18px;color:var(--text3);padding:2px 0}
+
+/* ── FLOW ── */
+.flow{display:flex;align-items:center;flex-wrap:wrap;justify-content:center}
+.flow-node{padding:10px 16px;border-radius:8px;font-size:12px;font-weight:500;text-align:center;border:1px solid var(--border);background:var(--flow-node-bg);color:var(--text);transition:background .35s}
+.flow-arrow{color:var(--blue2);font-size:18px;padding:0 5px;flex-shrink:0}
+
+/* ── CODE ── */
+.code-block{background:var(--code-bg);border:1px solid var(--code-border);border-radius:10px;padding:18px;font-family:'DM Mono',monospace;font-size:11.5px;line-height:1.8;color:#93c5fd;overflow:hidden;transition:background .35s}
+[data-theme="light"] .code-block{color:#1e40af}
+.code-comment{color:var(--text3)}
+.code-key{color:#fbbf24}
+[data-theme="light"] .code-key{color:#b45309}
+.code-val{color:#34d399}
+[data-theme="light"] .code-val{color:#0d9488}
+
+/* ── TECH ROW ── */
+.tech-row{display:flex;align-items:center;gap:16px;padding:12px 18px;border-radius:10px;border:1px solid var(--border);background:var(--tech-row-bg);transition:background .35s}
+.tech-label{font-family:'DM Mono',monospace;font-size:10px;color:var(--text3);letter-spacing:1px;min-width:120px;text-transform:uppercase}
+.tech-val{font-size:13px;color:var(--text);font-weight:500}
+.tech-sub{font-size:11px;color:var(--text2);margin-top:2px}
+
+/* ── TIMELINE ── */
+.timeline{display:flex;gap:0;width:100%;position:relative}
+.timeline::before{content:'';position:absolute;top:32px;left:0;right:0;height:1px;background:linear-gradient(90deg,var(--gold),var(--blue2));z-index:0}
+.t-phase{flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;position:relative;z-index:1}
+.t-dot{width:12px;height:12px;border-radius:50%;margin-top:26px;flex-shrink:0}
+.t-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px;width:100%;margin-top:12px;transition:background .35s}
+.t-phase-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;margin-top:6px}
+
+/* ── CHECK LIST ── */
+.check-item{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--border2)}
+.check-item:last-child{border-bottom:none}
+.check-icon{color:var(--teal);font-size:14px;margin-top:2px;flex-shrink:0}
+.check-text{font-size:13px;color:var(--text2);line-height:1.5}
+.check-text strong{color:var(--text);font-weight:500}
+
+/* ── CHANNEL PILL ── */
+.ch-pill{display:flex;align-items:center;gap:8px;padding:10px 16px;border-radius:8px;border:1px solid var(--border);background:var(--surface2);font-size:12px;font-weight:500;color:var(--text);transition:background .35s}
+
+/* ── STAT ── */
+.stat-num{font-family:'Fraunces',serif;font-size:clamp(36px,4vw,54px);font-weight:700;line-height:1}
+
+/* ── OWN ITEM ── */
+.own-item{display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:8px;border:1px solid var(--border);background:var(--own-item-bg);transition:background .35s}
+.own-dot{width:6px;height:6px;border-radius:50%;background:var(--teal);flex-shrink:0}
+
+/* ── COVER ORBS ── */
+.cover-bg{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.cover-orb{position:absolute;border-radius:50%;filter:blur(80px);opacity:var(--orb-opacity);transition:opacity .35s}
+.orb1{width:600px;height:600px;background:var(--blue);top:-100px;right:-100px}
+.orb2{width:400px;height:400px;background:var(--gold);bottom:-100px;left:-50px}
+
+/* ── MODULE GRID ── */
+.mod-item{padding:12px 14px;border-radius:10px;border:1px solid var(--border);background:var(--surface2);font-size:12px;transition:background .35s}
+.mod-item .mod-num{font-family:'DM Mono',monospace;font-size:9px;color:var(--blue2);letter-spacing:2px;margin-bottom:4px}
+.mod-item .mod-name{color:var(--text);font-weight:500;font-size:12px}
+.mod-item.new{border-color:rgba(245,158,11,0.3);background:rgba(245,158,11,0.05)}
+.mod-item.new .mod-num{color:var(--gold2)}
+
+/* ── BIG QUOTE ── */
+.big-quote{font-family:'Fraunces',serif;font-style:italic;font-size:clamp(18px,2.2vw,28px);line-height:1.55;color:var(--text2);text-align:center;max-width:800px}
+.big-quote em{color:var(--text);font-style:normal}
+
+/* ── BILLING TIER ── */
+.bill-tier{padding:14px 18px;border-radius:10px;transition:background .35s}
+</style>
+</head>
+<body>
+
+<!-- ══ TOP NAV ══ -->
+<div id="topnav">
+  <div id="topnav-brand">Neurosphere</div>
+  <div id="topnav-dots"></div>
+  <div id="topnav-right">
+    <div id="slide-label"></div>
+    <button id="themeToggle" title="Toggle light/dark mode">☀️</button>
+  </div>
+</div>
+
+<!-- ══ SLIDE COUNTER ══ -->
+<div id="counter"></div>
+
+<!-- ══ DECK ══ -->
+<div id="deck">
+
+<!-- S01 COVER -->
+<div class="slide active" id="s1">
+  <div class="cover-bg"><div class="cover-orb orb1"></div><div class="cover-orb orb2"></div></div>
+  <div style="text-align:center;position:relative;z-index:1">
+    <div class="eyebrow" style="margin-bottom:24px">Confidential — Prepared for Ghousuddin Syed</div>
+    <div class="display display-xl glow-text" style="max-width:880px;margin:0 auto 24px">
+      Enterprise AI Customer<br/>Operations Platform
+    </div>
+    <div class="divider" style="margin:24px auto"></div>
+    <p class="lead" style="max-width:520px;margin:0 auto 40px">
+      Technical Architecture & Platform Walkthrough<br/>
+      <span style="color:var(--text3)">Presented by Neurosphere</span>
+    </p>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <span class="tag tag-blue">15 Modules</span>
+      <span class="tag tag-gold">8-Month Delivery</span>
+      <span class="tag tag-teal">White-Label Ready</span>
+    </div>
+  </div>
+</div>
+
+<!-- S02 VISION -->
+<div class="slide" id="s2">
+  <div style="max-width:960px;width:100%">
+    <div class="eyebrow">The Vision</div>
+    <div class="display display-lg" style="margin-bottom:28px">What we are building</div>
+    <div class="big-quote" style="margin:0 auto 40px">
+      Not an AI receptionist. Not a chatbot.<br/>
+      An <em>AI Business Operating System</em> — handling every stage of the customer journey,
+      from the first missed call to long-term retention,
+      <em>entirely through intelligent automation.</em>
+    </div>
+    <div class="g3">
+      <div class="card" style="text-align:center">
+        <div class="card-icon">📞</div>
+        <div class="card-title">AI handles every call</div>
+        <div class="card-body">24/7, in the owner's cloned voice, booking appointments with zero human involvement</div>
+      </div>
+      <div class="card" style="text-align:center">
+        <div class="card-icon">🔁</div>
+        <div class="card-title">Recovers every missed lead</div>
+        <div class="card-body">Missed call → SMS in 45 seconds → AI follow-up call → booked appointment</div>
+      </div>
+      <div class="card" style="text-align:center">
+        <div class="card-icon">🏢</div>
+        <div class="card-title">Scales as a white-label SaaS</div>
+        <div class="card-body">Agencies resell under their own brand. End clients never know the platform exists.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- S03 PLATFORM OVERVIEW -->
+<div class="slide" id="s3">
+  <div style="max-width:1000px;width:100%">
+    <div class="eyebrow">Platform Scope</div>
+    <div class="display display-md" style="margin-bottom:6px">15 fully specified modules</div>
+    <p class="lead" style="margin-bottom:24px;font-size:14px">Core platform + enterprise extensions. <span class="gold">Gold = new additions from your brief.</span></p>
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px">
+      <div class="mod-item"><div class="mod-num">01</div><div class="mod-name">AI Voice Receptionist</div></div>
+      <div class="mod-item"><div class="mod-num">02</div><div class="mod-name">Lead Recovery Engine</div></div>
+      <div class="mod-item"><div class="mod-num">03</div><div class="mod-name">Omnichannel Hub</div></div>
+      <div class="mod-item"><div class="mod-num">04</div><div class="mod-name">White-Label Infrastructure</div></div>
+      <div class="mod-item"><div class="mod-num">05</div><div class="mod-name">Mobile Applications</div></div>
+      <div class="mod-item"><div class="mod-num">06</div><div class="mod-name">Industry Templates</div></div>
+      <div class="mod-item"><div class="mod-num">07</div><div class="mod-name">Enterprise CRM Sync</div></div>
+      <div class="mod-item"><div class="mod-num">08</div><div class="mod-name">Enterprise Billing</div></div>
+      <div class="mod-item"><div class="mod-num">09</div><div class="mod-name">Analytics & Reporting</div></div>
+      <div class="mod-item new"><div class="mod-num">10</div><div class="mod-name">Advanced AI Intelligence</div></div>
+      <div class="mod-item new"><div class="mod-num">11</div><div class="mod-name">AI Workforce & Agents</div></div>
+      <div class="mod-item new"><div class="mod-num">12</div><div class="mod-name">Customer Intelligence</div></div>
+      <div class="mod-item new"><div class="mod-num">13</div><div class="mod-name">AI Training Framework</div></div>
+      <div class="mod-item new"><div class="mod-num">14</div><div class="mod-name">Developer API & SDK</div></div>
+      <div class="mod-item new"><div class="mod-num">15</div><div class="mod-name">HIPAA / SOC2 Compliance</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- S04 SIX PILLARS -->
+<div class="slide" id="s4">
+  <div style="max-width:1000px;width:100%">
+    <div class="eyebrow">Technical Foundation</div>
+    <div class="display display-md" style="margin-bottom:24px">The six technical pillars</div>
+    <div class="g2">
+      <div class="pillar"><div class="pillar-num">01</div><div><div class="pillar-title">Multi-Tenant Architecture</div><div class="pillar-desc">The foundation everything sits on. One platform, hundreds of isolated businesses. Designed first, before any feature.</div></div></div>
+      <div class="pillar"><div class="pillar-num">02</div><div><div class="pillar-title">AI Voice & Conversation Engine</div><div class="pillar-desc">Vapi + ElevenLabs + GPT-4o. The product customers pay for. Sub-600ms latency target.</div></div></div>
+      <div class="pillar"><div class="pillar-num">03</div><div><div class="pillar-title">Omnichannel Messaging</div><div class="pillar-desc">Voice, SMS, WhatsApp, chat, Instagram, email — one unified inbox. Real-time via WebSocket.</div></div></div>
+      <div class="pillar"><div class="pillar-num">04</div><div><div class="pillar-title">White-Label Infrastructure</div><div class="pillar-desc">Custom domains, branding engine, agency dashboards, white-label mobile apps. The commercial model.</div></div></div>
+      <div class="pillar"><div class="pillar-num">05</div><div><div class="pillar-title">Automation Engine</div><div class="pillar-desc">BullMQ + Redis event-driven automation. Missed call → SMS → follow-up → CRM. Nothing slips through.</div></div></div>
+      <div class="pillar"><div class="pillar-num">06</div><div><div class="pillar-title">Enterprise Billing & Metering</div><div class="pillar-desc">Stripe metered billing. Three-tier wholesale/retail model. Usage tracked to the second.</div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- S05 MULTI-TENANT -->
+<div class="slide" id="s5">
+  <div style="max-width:960px;width:100%">
+    <div class="eyebrow">Pillar 01</div>
+    <div class="display display-md" style="margin-bottom:6px">Multi-Tenant Architecture</div>
+    <p class="lead" style="font-size:14px;margin-bottom:24px">The absolute foundation — designed first, before a single feature is built.</p>
+    <div class="g-half">
+      <div>
+        <div class="check-item"><div class="check-icon">✦</div><div class="check-text"><strong>One codebase, one database</strong> serving hundreds of isolated businesses simultaneously</div></div>
+        <div class="check-item"><div class="check-icon">✦</div><div class="check-text"><strong>tenant_id on every database row</strong> — the identifier that makes everything work</div></div>
+        <div class="check-item"><div class="check-icon">✦</div><div class="check-text"><strong>PostgreSQL Row-Level Security</strong> enforces isolation at database layer — not just code</div></div>
+        <div class="check-item"><div class="check-icon">✦</div><div class="check-text"><strong>JWT tokens carry tenant_id</strong> — every API call knows exactly which tenant it serves</div></div>
+        <div class="check-item"><div class="check-icon">✦</div><div class="check-text"><strong>Cannot be retrofitted</strong> — designed in week one or the platform is rebuilt later</div></div>
+      </div>
+      <div class="code-block">
+        <div class="code-comment">-- Every table carries tenant_id</div>
+        <div style="margin-top:8px">
+          <span class="code-key">contacts</span> table:<br/>
+          <span class="code-comment">┌──────┬────────────┬─────────────┐</span><br/>
+          <span class="code-comment">│ id   │ tenant_id  │ name        │</span><br/>
+          <span class="code-comment">├──────┼────────────┼─────────────┤</span><br/>
+          <span class="code-comment">│</span> <span class="code-val">1</span> <span class="code-comment">│</span> <span class="code-key">hvac-001</span> <span class="code-comment">│</span> <span class="code-val">John Smith</span> <span class="code-comment">│</span><br/>
+          <span class="code-comment">│</span> <span class="code-val">2</span> <span class="code-comment">│</span> <span class="code-key">spa-002</span> <span class="code-comment">│</span> <span class="code-val">Jane Doe</span> <span class="code-comment">│</span><br/>
+          <span class="code-comment">│</span> <span class="code-val">3</span> <span class="code-comment">│</span> <span class="code-key">hvac-001</span> <span class="code-comment">│</span> <span class="code-val">Bob Jones</span> <span class="code-comment">│</span><br/>
+          <span class="code-comment">└──────┴────────────┴─────────────┘</span>
+        </div>
+        <div style="margin-top:10px" class="code-comment">-- RLS: hvac-001 can NEVER</div>
+        <div class="code-comment">-- see spa-002 rows. Ever.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- S06 AI VOICE ENGINE -->
+<div class="slide" id="s6">
+  <div style="max-width:960px;width:100%">
+    <div class="eyebrow">Pillar 02</div>
+    <div class="display display-md" style="margin-bottom:6px">AI Voice & Conversation Engine</div>
+    <p class="lead" style="font-size:14px;margin-bottom:20px">A customer calls — the AI answers in the owner's cloned voice, books the appointment, logs everything.</p>
+    <div style="margin-bottom:20px">
+      <div class="flow">
+        <div class="flow-node" style="background:rgba(245,158,11,0.1);border-color:rgba(245,158,11,0.3);color:var(--gold2)">📞 Customer Calls</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">Vapi<br/><span style="font-size:10px;color:var(--text3)">Orchestration</span></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">GPT-4o<br/><span style="font-size:10px;color:var(--text3)">Brain</span></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">pgvector<br/><span style="font-size:10px;color:var(--text3)">RAG Knowledge</span></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node" style="background:rgba(20,184,166,0.1);border-color:rgba(20,184,166,0.3);color:var(--teal)">ElevenLabs<br/><span style="font-size:10px;color:var(--text3)">Cloned Voice</span></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node" style="background:rgba(59,130,246,0.1);border-color:rgba(59,130,246,0.3)">✅ Booked</div>
+      </div>
+    </div>
+    <div class="g4" style="gap:12px">
+      <div class="card" style="padding:16px"><div style="font-size:10px;color:var(--blue2);font-family:'DM Mono',monospace;letter-spacing:1px;margin-bottom:6px">VAPI</div><div style="font-size:12px;color:var(--text);font-weight:500;margin-bottom:4px">Call Orchestration</div><div style="font-size:11px;color:var(--text2)">SIP sessions, STT/TTS pipeline, turn-taking, interruption detection</div></div>
+      <div class="card" style="padding:16px"><div style="font-size:10px;color:var(--gold2);font-family:'DM Mono',monospace;letter-spacing:1px;margin-bottom:6px">ELEVENLABS</div><div style="font-size:12px;color:var(--text);font-weight:500;margin-bottom:4px">Voice Cloning</div><div style="font-size:11px;color:var(--text2)">2-min sample → cloned voice. Tone, accent, emotion preserved per tenant</div></div>
+      <div class="card" style="padding:16px"><div style="font-size:10px;color:var(--teal);font-family:'DM Mono',monospace;letter-spacing:1px;margin-bottom:6px">GPT-4o</div><div style="font-size:12px;color:var(--text);font-weight:500;margin-bottom:4px">Conversation Brain</div><div style="font-size:11px;color:var(--text2)">Real-time reasoning, tool-use, objection handling, escalation logic</div></div>
+      <div class="card" style="padding:16px"><div style="font-size:10px;color:var(--blue2);font-family:'DM Mono',monospace;letter-spacing:1px;margin-bottom:6px">PGVECTOR</div><div style="font-size:12px;color:var(--text);font-weight:500;margin-bottom:4px">Knowledge RAG</div><div style="font-size:11px;color:var(--text2)">Docs → embeddings → real-time retrieval. AI answers from business's own data</div></div>
+    </div>
+    <div style="text-align:center;margin-top:16px">
+      <span class="tag tag-blue">&lt;600ms latency target</span>&nbsp;
+      <span class="tag tag-teal">Emotion-aware conversations</span>&nbsp;
+      <span class="tag tag-gold">Interruption handling</span>
+    </div>
+  </div>
+</div>
+
+<!-- S07 OMNICHANNEL -->
+<div class="slide" id="s7">
+  <div style="max-width:960px;width:100%">
+    <div class="eyebrow">Pillar 03</div>
+    <div class="display display-md" style="margin-bottom:6px">Omnichannel Communication Hub</div>
+    <p class="lead" style="font-size:14px;margin-bottom:24px">Every channel. One inbox. All powered by the same AI brain.</p>
+    <div class="g-half">
+      <div style="display:flex;flex-direction:column;gap:9px">
+        <div class="ch-pill" style="border-color:rgba(245,158,11,0.3)">📞 <span>Voice Calls</span><span style="color:var(--text3);margin-left:auto;font-size:11px">Vapi + Twilio</span></div>
+        <div class="ch-pill" style="border-color:rgba(59,130,246,0.3)">💬 <span>SMS</span><span style="color:var(--text3);margin-left:auto;font-size:11px">Twilio Messaging</span></div>
+        <div class="ch-pill" style="border-color:rgba(20,184,166,0.3)">🟢 <span>WhatsApp</span><span style="color:var(--text3);margin-left:auto;font-size:11px">WhatsApp Business API</span></div>
+        <div class="ch-pill">🌐 <span>Website Chat</span><span style="color:var(--text3);margin-left:auto;font-size:11px">WebSocket widget</span></div>
+        <div class="ch-pill">📸 <span>Instagram DM</span><span style="color:var(--text3);margin-left:auto;font-size:11px">Meta Graph API</span></div>
+        <div class="ch-pill">📧 <span>Email</span><span style="color:var(--text3);margin-left:auto;font-size:11px">SendGrid inbound</span></div>
+      </div>
+      <div>
+        <div class="card" style="margin-bottom:12px">
+          <div class="card-title">Unified Inbox</div>
+          <div class="card-body">All six channels land in a single threaded view. AI summary and sentiment score per conversation. Agent assignment, internal notes, tagging, handoff — one place.</div>
+        </div>
+        <div class="card">
+          <div class="card-title">Real-Time Infrastructure</div>
+          <div class="card-body">WebSocket per user. Redis pub/sub broadcasts across all server instances. BullMQ ensures no message is ever lost. WhatsApp message → inbox in &lt;1 second.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- S08 WHITE LABEL OVERVIEW — FIXED HIERARCHY -->
+<div class="slide" id="s8">
+  <div style="max-width:880px;width:100%">
+    <div class="eyebrow">Pillar 04 — Key Focus Area</div>
+    <div class="display display-md" style="margin-bottom:6px">White-Label Infrastructure</div>
+    <p class="lead" style="font-size:14px;margin-bottom:24px">You own a SaaS platform. Agencies white-label it. Their clients use it as the agency's own product.</p>
+    <div style="display:flex;flex-direction:column;gap:6px;max-width:680px;margin:0 auto">
+      <div class="tier tier-super">
+        <div class="tier-label" style="color:var(--gold2)">Tier 1 — Platform Owner</div>
+        <div class="tier-name" style="color:var(--gold2)">You — Ghousuddin Syed</div>
+        <div class="tier-desc">You own the platform outright. Full Super Admin access, all IP, all infrastructure. You sell white-label licences to agencies at your chosen price. Neurosphere built it — you own it.</div>
+      </div>
+      <div class="tier-arrow">↓ sells white-label licences to</div>
+      <div class="tier tier-agency">
+        <div class="tier-label" style="color:var(--blue2)">Tier 2 — Agencies / Resellers</div>
+        <div class="tier-name" style="color:var(--blue2)">Any Digital Agency or Automation Consultancy</div>
+        <div class="tier-desc">They buy from you, brand the platform as their own, manage their clients underneath. Their logo, their domain, their mobile app. They set their own retail pricing and keep the margin.</div>
+      </div>
+      <div class="tier-arrow">↓ sells to their clients as their own product</div>
+      <div class="tier tier-client">
+        <div class="tier-label" style="color:var(--teal)">Tier 3 — End Business Clients</div>
+        <div class="tier-name" style="color:var(--teal)">HVAC Companies, MedSpas, Dental Practices…</div>
+        <div class="tier-desc">Completely isolated tenant. Configures their AI, manages conversations, views their analytics — all inside the agency's branded dashboard. They never know the underlying platform exists.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- S09 WHITE LABEL DEEP DIVE -->
+<div class="slide" id="s9">
+  <div style="max-width:1000px;width:100%">
+    <div class="eyebrow">Pillar 04 — How It Works</div>
+    <div class="display display-sm" style="margin-bottom:20px">White-labelling: the technical implementation</div>
+    <div class="g3">
+      <div>
+        <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--blue2);letter-spacing:2px;margin-bottom:10px">CUSTOM DOMAINS</div>
+        <div class="check-item"><div class="check-icon">✦</div><div class="check-text">Agency adds CNAME → <strong>app.theiragency.com</strong> points to the platform</div></div>
+        <div class="check-item"><div class="check-icon">✦</div><div class="check-text">Cloudflare <strong>auto-provisions SSL</strong> — live in minutes, zero setup</div></div>
+        <div class="check-item"><div class="check-icon">✦</div><div class="check-text">Platform reads incoming domain, loads <strong>that agency's brand config</strong></div></div>
+        <div class="check-item"><div class="check-icon">✦</div><div class="check-text">End clients see <strong>only the agency's domain</strong> — your platform is invisible</div></div>
+      </div>
+      <div>
+        <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--gold2);letter-spacing:2px;margin-bottom:10px">BRANDING ENGINE</div>
+        <div class="code-block" style="font-size:11px">
+          {<br/>
+          &nbsp;<span class="code-key">"logo_url"</span>: <span class="code-val">"cdn/agency-logo.svg"</span>,<br/>
+          &nbsp;<span class="code-key">"primary"</span>: <span class="code-val">"#1A3C5E"</span>,<br/>
+          &nbsp;<span class="code-key">"domain"</span>: <span class="code-val">"app.theiragency.com"</span>,<br/>
+          &nbsp;<span class="code-key">"email_from"</span>: <span class="code-val">"hi@theiragency.com"</span>,<br/>
+          &nbsp;<span class="code-key">"app_name"</span>: <span class="code-val">"AgencyAI"</span><br/>
+          }
+        </div>
+        <div style="font-size:11px;color:var(--text2);margin-top:8px">Injected at runtime via CSS variables. Instant. No rebuild needed.</div>
+      </div>
+      <div>
+        <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--teal);letter-spacing:2px;margin-bottom:10px">WHITE-LABEL MOBILE APP</div>
+        <div class="check-item"><div class="check-icon">✦</div><div class="check-text">Single React Native codebase — <strong>Expo EAS Build</strong> packages per agency</div></div>
+        <div class="check-item"><div class="check-icon">✦</div><div class="check-text">Agency provides their <strong>Apple Developer</strong> &amp; <strong>Google Play</strong> accounts</div></div>
+        <div class="check-item"><div class="check-icon">✦</div><div class="check-text">App publishes under <strong>agency's name, icon, splash screen</strong></div></div>
+        <div class="check-item"><div class="check-icon">✦</div><div class="check-text">Their clients download <strong>"AgencyAI"</strong> — not our app, theirs</div></div>
+      </div>
+    </div>
+    <div style="margin-top:18px;padding:14px 22px;border-radius:10px;background:var(--info-box-bg);border:1px solid var(--info-box-border);display:flex;gap:14px;align-items:center">
+      <div style="font-size:18px">✅</div>
+      <div style="font-size:12px;color:var(--text2)">All 8 white-label requirements confirmed: <strong style="color:var(--text)">agency dashboards, client subaccounts, reseller structure, custom domains, white-label mobile, agency billing, independent branding, tenant isolation.</strong></div>
+    </div>
+  </div>
+</div>
+
+<!-- S10 AUTOMATION ENGINE -->
+<div class="slide" id="s10">
+  <div style="max-width:960px;width:100%">
+    <div class="eyebrow">Pillar 05</div>
+    <div class="display display-md" style="margin-bottom:6px">Event-Driven Automation Engine</div>
+    <p class="lead" style="font-size:14px;margin-bottom:20px">The intelligence that separates the platform from a basic answering service.</p>
+    <div style="margin-bottom:20px">
+      <div style="font-size:10px;color:var(--text3);font-family:'DM Mono',monospace;letter-spacing:1px;margin-bottom:10px;text-transform:uppercase">Example: Missed Call Recovery Flow</div>
+      <div class="flow">
+        <div class="flow-node" style="background:rgba(239,68,68,0.1);border-color:rgba(239,68,68,0.3);color:#fca5a5">📵 Missed Call</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">Vapi Webhook<br/><span style="font-size:10px;color:var(--text3)">&lt;1s</span></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">BullMQ Queue<br/><span style="font-size:10px;color:var(--text3)">Published</span></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node" style="background:rgba(59,130,246,0.1);border-color:rgba(59,130,246,0.3)">SMS Sent<br/><span style="font-size:10px;color:var(--text3)">45 seconds</span></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">No Reply?<br/><span style="font-size:10px;color:var(--text3)">10 min</span></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node" style="background:rgba(20,184,166,0.1);border-color:rgba(20,184,166,0.3);color:var(--teal)">AI Calls Back<br/><span style="font-size:10px;color:var(--text3)">Booked ✓</span></div>
+      </div>
+    </div>
+    <div class="g3">
+      <div class="card"><div class="card-title">Reliability First</div><div class="card-body">BullMQ with Redis persistence. If a worker crashes mid-job, the job retries automatically. No automation is ever silently lost.</div></div>
+      <div class="card"><div class="card-title">Precise Timing</div><div class="card-body">Delayed job execution to the second. Appointment reminders at 48hr, 24hr, 2hr — all scheduled automatically at booking time.</div></div>
+      <div class="card"><div class="card-title">Tenant Isolation</div><div class="card-body">Separate queues per tenant. One busy agency cannot starve another's automation jobs. Fair resource allocation by design.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- S11 BILLING -->
+<div class="slide" id="s11">
+  <div style="max-width:960px;width:100%">
+    <div class="eyebrow">Pillar 06</div>
+    <div class="display display-md" style="margin-bottom:6px">Enterprise Billing & Usage Metering</div>
+    <p class="lead" style="font-size:14px;margin-bottom:22px">Three-tier wholesale/retail model. Every AI minute, every SMS, tracked and billed automatically.</p>
+    <div class="g-half">
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div class="bill-tier" style="background:var(--tier-super-bg);border:1px solid rgba(245,158,11,0.3)">
+          <div style="font-size:10px;color:var(--gold2);font-family:'DM Mono',monospace;letter-spacing:1px;margin-bottom:4px">YOU CHARGE AGENCIES</div>
+          <div style="font-size:22px;font-family:'Fraunces',serif;color:var(--gold2)">£0.05 / AI minute</div>
+          <div style="font-size:11px;color:var(--text2)">Wholesale — you set this</div>
+        </div>
+        <div style="text-align:center;font-size:18px;color:var(--text3)">↓</div>
+        <div class="bill-tier" style="background:var(--tier-agency-bg);border:1px solid rgba(59,130,246,0.3)">
+          <div style="font-size:10px;color:var(--blue2);font-family:'DM Mono',monospace;letter-spacing:1px;margin-bottom:4px">AGENCY CHARGES THEIR CLIENT</div>
+          <div style="font-size:22px;font-family:'Fraunces',serif;color:var(--blue2)">£0.12 / AI minute</div>
+          <div style="font-size:11px;color:var(--text2)">Retail — agency sets this, keeps the margin</div>
+        </div>
+        <div style="text-align:center;font-size:18px;color:var(--text3)">↓</div>
+        <div class="bill-tier" style="background:var(--tier-client-bg);border:1px solid rgba(20,184,166,0.3)">
+          <div style="font-size:10px;color:var(--teal);font-family:'DM Mono',monospace;letter-spacing:1px;margin-bottom:4px">AGENCY MARGIN</div>
+          <div style="font-size:22px;font-family:'Fraunces',serif;color:var(--teal)">£0.07 / AI minute</div>
+          <div style="font-size:11px;color:var(--text2)">Automatic. Scales with every client they add.</div>
+        </div>
+      </div>
+      <div>
+        <div class="check-item"><div class="check-icon">✦</div><div class="check-text"><strong>Stripe Metered Billing</strong> — usage accumulates in real time via Stripe Usage Records API</div></div>
+        <div class="check-item"><div class="check-icon">✦</div><div class="check-text"><strong>Automated invoicing</strong> — generated and emailed at billing period end. Zero manual work.</div></div>
+        <div class="check-item"><div class="check-icon">✦</div><div class="check-text"><strong>Overage billing</strong> — automatic charges when clients exceed plan limits</div></div>
+        <div class="check-item"><div class="check-icon">✦</div><div class="check-text"><strong>Stripe Tax</strong> — VAT/GST calculated by customer location automatically</div></div>
+        <div class="check-item"><div class="check-icon">✦</div><div class="check-text"><strong>Agency billing dashboard</strong> — see every client's consumption before your invoice arrives</div></div>
+        <div class="check-item"><div class="check-icon">✦</div><div class="check-text"><strong>Failed payment handling</strong> — automatic retry, dunning emails, account suspension</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- S12 TECH STACK -->
+<div class="slide" id="s12">
+  <div style="max-width:960px;width:100%">
+    <div class="eyebrow">Technical Architecture</div>
+    <div class="display display-md" style="margin-bottom:20px">Full technology stack</div>
+    <div class="g2" style="gap:10px">
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div class="tech-row"><div class="tech-label">Frontend</div><div><div class="tech-val">Next.js + React + Tailwind</div><div class="tech-sub">SSR, deployed on Vercel / AWS CloudFront</div></div></div>
+        <div class="tech-row"><div class="tech-label">Mobile</div><div><div class="tech-val">React Native + Expo</div><div class="tech-sub">Single codebase → iOS + Android + white-label builds</div></div></div>
+        <div class="tech-row"><div class="tech-label">Backend API</div><div><div class="tech-val">Node.js + Fastify (TypeScript)</div><div class="tech-sub">API-first, versioned, every function as REST</div></div></div>
+        <div class="tech-row"><div class="tech-label">Real-Time</div><div><div class="tech-val">Socket.IO + WebSocket</div><div class="tech-sub">Live inbox, typing indicators, call events</div></div></div>
+        <div class="tech-row"><div class="tech-label">Task Queue</div><div><div class="tech-val">BullMQ + Redis</div><div class="tech-sub">All automations, CRM sync, billing events</div></div></div>
+        <div class="tech-row"><div class="tech-label">Database</div><div><div class="tech-val">PostgreSQL + pgvector</div><div class="tech-sub">Primary data + vector embeddings for RAG</div></div></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div class="tech-row"><div class="tech-label">Voice</div><div><div class="tech-val">Vapi + ElevenLabs + GPT-4o</div><div class="tech-sub">Orchestration, voice cloning, LLM reasoning</div></div></div>
+        <div class="tech-row"><div class="tech-label">Messaging</div><div><div class="tech-val">Twilio + 360dialog</div><div class="tech-sub">SMS, voice calls, WhatsApp Business API</div></div></div>
+        <div class="tech-row"><div class="tech-label">Billing</div><div><div class="tech-val">Stripe</div><div class="tech-sub">Subscriptions, metered billing, tax, invoicing</div></div></div>
+        <div class="tech-row"><div class="tech-label">Push</div><div><div class="tech-val">Firebase FCM</div><div class="tech-sub">iOS + Android cross-platform push delivery</div></div></div>
+        <div class="tech-row"><div class="tech-label">Infrastructure</div><div><div class="tech-val">AWS + Docker + Kubernetes</div><div class="tech-sub">ECS Fargate (Phase 1) → EKS (Phase 2+)</div></div></div>
+        <div class="tech-row"><div class="tech-label">Domain / SSL</div><div><div class="tech-val">Cloudflare</div><div class="tech-sub">Custom domain routing + auto SSL per agency</div></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- S13 TIMELINE -->
+<div class="slide" id="s13">
+  <div style="max-width:1040px;width:100%">
+    <div class="eyebrow">Delivery Plan</div>
+    <div class="display display-md" style="margin-bottom:6px">6–8 month phased delivery</div>
+    <p class="lead" style="font-size:13px;margin-bottom:20px">3 developers × $3,000/month &nbsp;·&nbsp; Full MVP live in 2 months &nbsp;·&nbsp; Phase 2 unlocks UAE market</p>
+    <div class="timeline">
+      <div class="t-phase">
+        <div class="t-dot" style="background:var(--gold)"></div>
+        <div class="t-phase-label" style="color:var(--gold2)">Phase 1</div>
+        <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text3)">Months 1–2</div>
+        <div class="t-card" style="border-color:rgba(245,158,11,0.3)">
+          <div style="font-size:11px;font-weight:600;color:var(--gold2);margin-bottom:8px">Full MVP Launch ✦</div>
+          <div style="font-size:11px;color:var(--text2);line-height:1.75">AI voice receptionist<br/>Lead recovery engine<br/>Unified inbox (3 channels)<br/>GoHighLevel CRM sync<br/>Core dashboard + billing<br/>Multi-language: EN / ES / FR<br/>2 templates: HVAC & MedSpa</div>
+        </div>
+      </div>
+      <div class="t-phase">
+        <div class="t-dot" style="background:var(--blue)"></div>
+        <div class="t-phase-label" style="color:var(--blue2)">Phase 2</div>
+        <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text3)">Months 3–4</div>
+        <div class="t-card" style="border-color:rgba(59,130,246,0.3)">
+          <div style="font-size:11px;font-weight:600;color:var(--blue2);margin-bottom:8px">White-Label + UAE 🇦🇪</div>
+          <div style="font-size:11px;color:var(--text2);line-height:1.75">Full omnichannel (6 channels)<br/>White-label infrastructure<br/>Agency mode live<br/>Mobile app development begins<br/>UAE market launch<br/>Tier-based billing system</div>
+        </div>
+      </div>
+      <div class="t-phase">
+        <div class="t-dot" style="background:var(--teal)"></div>
+        <div class="t-phase-label" style="color:var(--teal)">Phase 3</div>
+        <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text3)">Months 5–6</div>
+        <div class="t-card" style="border-color:rgba(20,184,166,0.3)">
+          <div style="font-size:11px;font-weight:600;color:var(--teal);margin-bottom:8px">Advanced Features</div>
+          <div style="font-size:11px;color:var(--text2);line-height:1.75">Deep CRM integrations<br/>Two-way sync + field mapping<br/>Outbound AI sales calls<br/>Customer lifecycle automation<br/>Intelligence layer<br/>Mobile app Phase 2</div>
+        </div>
+      </div>
+      <div class="t-phase">
+        <div class="t-dot" style="background:var(--blue2)"></div>
+        <div class="t-phase-label" style="color:var(--blue2)">Phase 4</div>
+        <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text3)">Months 7–8</div>
+        <div class="t-card" style="border-color:rgba(59,130,246,0.3)">
+          <div style="font-size:11px;font-weight:600;color:var(--blue2);margin-bottom:8px">Enterprise Platform</div>
+          <div style="font-size:11px;color:var(--text2);line-height:1.75">Analytics & reporting suite<br/>Developer API + SDK<br/>HIPAA / SOC2 filing begins<br/>(4–6 month audit period)<br/>AI training framework<br/>Mobile app Phase 3</div>
+        </div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:18px">
+      <span class="tag tag-gold">MVP live Month 2 — sellable from day one</span>&nbsp;
+      <span class="tag tag-teal">UAE launch Month 4</span>&nbsp;
+      <span class="tag tag-blue">Enterprise-grade by Month 8</span>
+    </div>
+  </div>
+</div>
+
+<!-- S13B TEAM & INVESTMENT -->
+<div class="slide" id="s13b">
+  <div style="max-width:920px;width:100%">
+    <div class="eyebrow">Team & Investment</div>
+    <div class="display display-md" style="margin-bottom:8px">3 developers · $3,000/month each</div>
+    <p class="lead" style="font-size:14px;margin-bottom:28px">Lean, focused team with AI-assisted development (Claude Code) — delivering enterprise output at startup speed.</p>
+    <div class="g3" style="margin-bottom:20px">
+      <div class="card" style="text-align:center">
+        <div style="font-size:32px;margin-bottom:12px">🧠</div>
+        <div class="card-title">Lead Developer</div>
+        <div class="card-body">Owns architecture, technical decisions, and cross-module integration. Ensures multi-tenant foundation is correct from day one.</div>
+        <div style="margin-top:12px;font-family:'DM Mono',monospace;font-size:12px;color:var(--blue2)">$1,000 / month</div>
+      </div>
+      <div class="card" style="text-align:center">
+        <div style="font-size:32px;margin-bottom:12px">⚙️</div>
+        <div class="card-title">Backend Engineer</div>
+        <div class="card-body">Owns API layer, BullMQ automation engine, CRM integrations, billing infrastructure, and database architecture.</div>
+        <div style="margin-top:12px;font-family:'DM Mono',monospace;font-size:12px;color:var(--blue2)">$1,000 / month</div>
+      </div>
+      <div class="card" style="text-align:center">
+        <div style="font-size:32px;margin-bottom:12px">🎨</div>
+        <div class="card-title">Full-Stack Engineer</div>
+        <div class="card-body">Owns frontend dashboard, React Native mobile app, white-label branding engine, and real-time WebSocket layer.</div>
+        <div style="margin-top:12px;font-family:'DM Mono',monospace;font-size:12px;color:var(--blue2)">$1,000 / month</div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">
+      <div style="padding:18px;border-radius:12px;background:var(--tier-super-bg);border:1px solid rgba(245,158,11,0.3);text-align:center">
+        <div style="font-family:'Fraunces',serif;font-size:32px;font-weight:700;color:var(--gold2)">$3,000</div>
+        <div style="font-size:11px;color:var(--text2);margin-top:4px">per month (team total)</div>
+      </div>
+      <div style="padding:18px;border-radius:12px;background:var(--tier-agency-bg);border:1px solid rgba(59,130,246,0.3);text-align:center">
+        <div style="font-family:'Fraunces',serif;font-size:32px;font-weight:700;color:var(--blue2)">$18–24k</div>
+        <div style="font-size:11px;color:var(--text2);margin-top:4px">total project cost (6–8 months)</div>
+      </div>
+      <div style="padding:18px;border-radius:12px;background:var(--tier-client-bg);border:1px solid rgba(20,184,166,0.3);text-align:center">
+        <div style="font-family:'Fraunces',serif;font-size:32px;font-weight:700;color:var(--teal)">$500–1k</div>
+        <div style="font-size:11px;color:var(--text2);margin-top:4px">per month post-launch support</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- S14 OWNERSHIP -->
+<div class="slide" id="s14">
+  <div style="max-width:860px;width:100%">
+    <div class="eyebrow">Ownership Structure</div>
+    <div class="display display-md" style="margin-bottom:6px">Everything belongs to you</div>
+    <p class="lead" style="font-size:14px;margin-bottom:24px">Neurosphere acts as your development vendor. All rights, infrastructure, and IP transfer to you on final delivery and payment.</p>
+    <div class="g2">
+      <div>
+        <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--gold2);letter-spacing:2px;margin-bottom:12px;text-transform:uppercase">You Own</div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div class="own-item"><div class="own-dot"></div><div style="font-size:13px;color:var(--text)">Super Admin access & full platform control</div></div>
+          <div class="own-item"><div class="own-dot"></div><div style="font-size:13px;color:var(--text)">Full source code — committed to your Git repositories</div></div>
+          <div class="own-item"><div class="own-dot"></div><div style="font-size:13px;color:var(--text)">All cloud infrastructure & hosting accounts</div></div>
+          <div class="own-item"><div class="own-dot"></div><div style="font-size:13px;color:var(--text)">All third-party accounts (Twilio, OpenAI, Stripe…)</div></div>
+          <div class="own-item"><div class="own-dot"></div><div style="font-size:13px;color:var(--text)">All intellectual property & commercial rights</div></div>
+          <div class="own-item"><div class="own-dot"></div><div style="font-size:13px;color:var(--text)">Production environments & databases</div></div>
+        </div>
+      </div>
+      <div>
+        <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--blue2);letter-spacing:2px;margin-bottom:12px;text-transform:uppercase">Neurosphere's Role</div>
+        <div class="card" style="margin-bottom:12px">
+          <div class="card-title">Development Vendor</div>
+          <div class="card-body">We build under your accounts. Your team grants us developer access. All commits go to your repositories. We hold nothing.</div>
+        </div>
+        <div class="card" style="margin-bottom:12px">
+          <div class="card-title">Optional Post-Launch Support</div>
+          <div class="card-body">Available as a paid maintenance partner after delivery — entirely at your discretion. No lock-in.</div>
+        </div>
+        <div style="padding:12px 16px;border-radius:8px;background:var(--info-box-bg);border:1px solid var(--info-box-border);font-size:12px;color:var(--text2)">
+          All documented in the project agreement.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- S15 FUTURE ROADMAP -->
+<div class="slide" id="s15">
+  <div style="max-width:960px;width:100%">
+    <div class="eyebrow">Long-Term Vision</div>
+    <div class="display display-md" style="margin-bottom:6px">Future expansion roadmap</div>
+    <p class="lead" style="font-size:14px;margin-bottom:24px">The architecture is designed for this. Future modules slot in — nothing gets rebuilt.</p>
+    <div class="g4">
+      <div class="card" style="border-color:rgba(245,158,11,0.2)"><div style="font-size:10px;color:var(--gold2);font-family:'DM Mono',monospace;letter-spacing:1px;margin-bottom:8px">VOICE IDENTITY</div><div class="card-body">Multi-voice library, voice approval workflow, brand voice versioning and analytics</div></div>
+      <div class="card" style="border-color:rgba(59,130,246,0.2)"><div style="font-size:10px;color:var(--blue2);font-family:'DM Mono',monospace;letter-spacing:1px;margin-bottom:8px">MARKETPLACE</div><div class="card-body">App marketplace, plugin ecosystem, third-party extensions, monetised integrations</div></div>
+      <div class="card" style="border-color:rgba(20,184,166,0.2)"><div style="font-size:10px;color:var(--teal);font-family:'DM Mono',monospace;letter-spacing:1px;margin-bottom:8px">INTERNAL AI</div><div class="card-body">Employee AI assistant, operations copilot, AI reporting assistant, internal workflows</div></div>
+      <div class="card" style="border-color:rgba(139,92,246,0.2)"><div style="font-size:10px;color:#a78bfa;font-family:'DM Mono',monospace;letter-spacing:1px;margin-bottom:8px">VIDEO</div><div class="card-body">WebRTC video calling, AI meeting assistant, transcription, summaries, screen sharing</div></div>
+    </div>
+    <div style="margin-top:20px;display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div style="padding:18px 22px;border-radius:12px;background:var(--surface);border:1px solid var(--border)">
+        <div class="display display-sm" style="margin-bottom:6px;font-size:20px">API-First. Modular. Multi-Tenant.</div>
+        <div class="lead" style="font-size:13px">Every future module plugs into the same architecture. No rebuilds. No limits on where this goes.</div>
+      </div>
+      <div style="padding:18px 22px;border-radius:12px;background:var(--tier-agency-bg);border:1px solid rgba(59,130,246,0.3)">
+        <div style="font-size:10px;color:var(--blue2);font-family:'DM Mono',monospace;letter-spacing:1px;margin-bottom:8px">EXPANSION MARKETS</div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px"><div style="font-size:20px">🇦🇪</div><div><div style="font-size:13px;font-weight:600;color:var(--text)">UAE Launch — Phase 2 (Month 4)</div><div style="font-size:11px;color:var(--text2)">White-label infrastructure enables rapid market entry. Local language support already included.</div></div></div>
+        <div style="display:flex;align-items:center;gap:10px"><div style="font-size:20px">🌍</div><div><div style="font-size:13px;font-weight:600;color:var(--text)">Further Markets — Post Phase 2</div><div style="font-size:11px;color:var(--text2)">Multi-language foundation supports expansion into any English, Spanish, or French-speaking market.</div></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- S16 NEXT STEPS -->
+<div class="slide" id="s16">
+  <div style="max-width:800px;width:100%;text-align:center">
+    <div class="cover-bg"><div class="cover-orb orb1"></div><div class="cover-orb orb2"></div></div>
+    <div style="position:relative;z-index:1">
+      <div class="eyebrow">Ready to Build</div>
+      <div class="display display-lg glow-text" style="margin-bottom:20px">Let's get started</div>
+      <div class="divider" style="margin:0 auto 28px"></div>
+      <div style="display:flex;flex-direction:column;gap:10px;text-align:left;margin-bottom:32px">
+        <div style="display:flex;gap:16px;align-items:center;padding:14px 20px;border-radius:10px;background:var(--surface);border:1px solid var(--border)">
+          <div style="font-family:'Fraunces',serif;font-size:28px;color:var(--blue-dim);font-weight:700;min-width:32px">1</div>
+          <div><div style="font-size:14px;font-weight:600;color:var(--text);margin-bottom:2px">Confirm alignment on scope & architecture</div><div style="font-size:12px;color:var(--text2)">15 modules, 6–8 month delivery, 3 developers at $1k/month ($3k/month total) — all in the proposal</div></div>
+        </div>
+        <div style="display:flex;gap:16px;align-items:center;padding:14px 20px;border-radius:10px;background:var(--surface);border:1px solid var(--border)">
+          <div style="font-family:'Fraunces',serif;font-size:28px;color:var(--blue-dim);font-weight:700;min-width:32px">2</div>
+          <div><div style="font-size:14px;font-weight:600;color:var(--text);margin-bottom:2px">Set up infrastructure accounts under your ownership</div><div style="font-size:12px;color:var(--text2)">AWS, GitHub, Twilio, ElevenLabs, OpenAI, Stripe, Cloudflare</div></div>
+        </div>
+        <div style="display:flex;gap:16px;align-items:center;padding:14px 20px;border-radius:10px;background:var(--surface);border:1px solid var(--border)">
+          <div style="font-family:'Fraunces',serif;font-size:28px;color:var(--blue-dim);font-weight:700;min-width:32px">3</div>
+          <div><div style="font-size:14px;font-weight:600;color:var(--text);margin-bottom:2px">Sign project agreement & invoice</div><div style="font-size:12px;color:var(--text2)">Documents ownership, IP transfer, and delivery milestones formally</div></div>
+        </div>
+        <div style="display:flex;gap:16px;align-items:center;padding:14px 20px;border-radius:10px;background:var(--step-blue-bg);border:1px solid var(--step-blue-border)">
+          <div style="font-family:'Fraunces',serif;font-size:28px;color:var(--blue2);font-weight:700;min-width:32px">4</div>
+          <div><div style="font-size:14px;font-weight:600;color:var(--blue2);margin-bottom:2px">Kick off Phase 1 — Week 1</div><div style="font-size:12px;color:var(--text2)">Development begins within 5 business days of agreement signing</div></div>
+        </div>
+      </div>
+      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+        <span class="tag tag-blue">15 Modules Specified</span>
+        <span class="tag tag-gold">8 Months to Delivery</span>
+        <span class="tag tag-teal">Full Ownership Transferred</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /deck -->
+
+<!-- ══ NAV BUTTONS ══ -->
+<div id="nav">
+  <button class="nav-btn" id="prevBtn" onclick="go(-1)" disabled>‹</button>
+  <button class="nav-btn" id="nextBtn" onclick="go(1)">›</button>
+</div>
+
+<script>
+const SLIDE_LABELS = [
+  "Cover","Vision","Platform Overview","Six Pillars",
+  "Multi-Tenant Architecture","AI Voice Engine","Omnichannel Hub",
+  "White-Label Overview","White-Label: How It Works","Automation Engine",
+  "Pricing & Billing","Tech Stack","6–8 Month Timeline",
+  "Team & Investment","Ownership","Future Roadmap","Next Steps"
+];
+
+const slides = document.querySelectorAll('.slide');
+const total = slides.length;
+let cur = 0;
+let isDark = false;
+
+/* ── Build top nav dots ── */
+const dotsContainer = document.getElementById('topnav-dots');
+for (let i = 0; i < total; i++) {
+  const seg = document.createElement('div');
+  seg.className = 'tn-segment';
+  if (i > 0) {
+    const line = document.createElement('div');
+    line.className = 'tn-line';
+    line.id = `tn-line-${i}`;
+    seg.appendChild(line);
+  }
+  const dot = document.createElement('div');
+  dot.className = 'tn-dot' + (i === 0 ? ' active' : '');
+  dot.id = `tn-dot-${i}`;
+  dot.title = SLIDE_LABELS[i];
+  dot.onclick = () => goTo(i);
+  const label = document.createElement('div');
+  label.className = 'tn-dot-label';
+  label.textContent = SLIDE_LABELS[i];
+  dot.appendChild(label);
+  seg.appendChild(dot);
+  dotsContainer.appendChild(seg);
+}
+
+function updateDots() {
+  for (let i = 0; i < total; i++) {
+    const dot = document.getElementById(`tn-dot-${i}`);
+    dot.classList.remove('active','visited');
+    if (i === cur) dot.classList.add('active');
+    else if (i < cur) dot.classList.add('visited');
+    if (i > 0) {
+      const line = document.getElementById(`tn-line-${i}`);
+      line.classList.toggle('filled', i <= cur);
+    }
+  }
+  document.getElementById('slide-label').textContent = SLIDE_LABELS[cur];
+  document.getElementById('counter').textContent =
+    `${String(cur+1).padStart(2,'0')} / ${String(total).padStart(2,'0')}`;
+  document.getElementById('prevBtn').disabled = cur === 0;
+  document.getElementById('nextBtn').disabled = cur === total - 1;
+}
+
+function go(dir) {
+  const next = Math.max(0, Math.min(total-1, cur+dir));
+  if (next === cur) return;
+  slides[cur].classList.remove('active');
+  slides[cur].classList.add('exit');
+  const prev = cur;
+  setTimeout(() => slides[prev].classList.remove('exit'), 600);
+  cur = next;
+  slides[cur].classList.add('active');
+  updateDots();
+}
+
+function goTo(n) {
+  if (n === cur) return;
+  slides[cur].classList.remove('active');
+  slides[cur].classList.add('exit');
+  const prev = cur;
+  setTimeout(() => slides[prev].classList.remove('exit'), 600);
+  cur = n;
+  slides[cur].classList.add('active');
+  updateDots();
+}
+
+document.getElementById('themeToggle').addEventListener('click', () => {
+  isDark = !isDark;
+  document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+  document.getElementById('themeToggle').textContent = isDark ? '🌙' : '☀️';
+});
+
+document.addEventListener('keydown', e => {
+  if (['ArrowRight','ArrowDown',' '].includes(e.key)) { e.preventDefault(); go(1); }
+  if (['ArrowLeft','ArrowUp'].includes(e.key)) { e.preventDefault(); go(-1); }
+});
+
+updateDots();
+</script>
+</body>
+</html>
